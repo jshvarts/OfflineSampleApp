@@ -1,5 +1,6 @@
 package com.example.offline.comments;
 
+import com.birbit.android.jobqueue.JobManager;
 import com.example.offline.rx.SchedulersFacade;
 
 import dagger.Module;
@@ -12,13 +13,30 @@ import dagger.Provides;
 public class CommentsModule {
 
     @Provides
-    CommentsRepository provideLobbyGreetingRepository() {
+    CommentsRepository provideCommentsRepository() {
         return new CommentsRepository();
     }
 
     @Provides
-    CommentsViewModelFactory provideLobbyViewModelFactory(AddCommentUseCase addCommentUseCase,
-                                                          SchedulersFacade schedulersFacade) {
-        return new CommentsViewModelFactory(addCommentUseCase, schedulersFacade);
+    CommentsViewModelFactory provideCommentsViewModelFactory(AddCommentUseCase addCommentUseCase,
+                                                             SyncCommentUseCase syncCommentUseCase,
+                                                             UpdateCommentUseCase updateCommentUseCase,
+                                                             SchedulersFacade schedulersFacade) {
+        return new CommentsViewModelFactory(addCommentUseCase, syncCommentUseCase, updateCommentUseCase, schedulersFacade);
+    }
+
+    @Provides
+    AddCommentUseCase provideAddCommentUseCase(CommentsRepository commentsRepository) {
+        return new AddCommentUseCase(commentsRepository);
+    }
+
+    @Provides
+    UpdateCommentUseCase provideUpdateCommentUseCase(CommentsRepository commentsRepository) {
+        return new UpdateCommentUseCase(commentsRepository);
+    }
+
+    @Provides
+    SyncCommentUseCase provideSyncCommentUseCase(JobManager jobManager) {
+        return new SyncCommentUseCase(jobManager);
     }
 }

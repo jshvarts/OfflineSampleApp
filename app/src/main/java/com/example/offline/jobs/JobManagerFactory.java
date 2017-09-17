@@ -1,4 +1,4 @@
-package com.example.offline.services;
+package com.example.offline.jobs;
 
 import android.content.Context;
 import android.os.Build;
@@ -8,6 +8,7 @@ import com.birbit.android.jobqueue.config.Configuration;
 import com.birbit.android.jobqueue.log.CustomLogger;
 import com.birbit.android.jobqueue.scheduling.FrameworkJobSchedulerService;
 import com.birbit.android.jobqueue.scheduling.GcmJobSchedulerService;
+import com.example.offline.services.SchedulerJobService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 

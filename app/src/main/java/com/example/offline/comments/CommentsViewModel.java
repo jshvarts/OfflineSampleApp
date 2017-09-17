@@ -1,29 +1,32 @@
 package com.example.offline.comments;
 
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-import com.example.offline.common.viewmodel.Response;
+import com.example.offline.model.Comment;
 import com.example.offline.rx.SchedulersFacade;
 
-import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
+import timber.log.Timber;
 
 class CommentsViewModel extends ViewModel {
 
     private final AddCommentUseCase addCommentUseCase;
 
+    private final SyncCommentUseCase syncCommentUseCase;
+
+    private final UpdateCommentUseCase updateCommentUseCase;
+
     private final SchedulersFacade schedulersFacade;
 
     private final CompositeDisposable disposables = new CompositeDisposable();
 
-    private final MutableLiveData<Response<String>> response = new MutableLiveData<>();
-
-    private final MutableLiveData<Boolean> commentAdded = new MutableLiveData<>();
-
     CommentsViewModel(AddCommentUseCase addCommentUseCase,
+                      SyncCommentUseCase syncCommentUseCase,
+                      UpdateCommentUseCase updateCommentUseCase,
                       SchedulersFacade schedulersFacade) {
         this.addCommentUseCase = addCommentUseCase;
+        this.syncCommentUseCase = syncCommentUseCase;
+        this.updateCommentUseCase = updateCommentUseCase;
         this.schedulersFacade = schedulersFacade;
     }
 
@@ -33,23 +36,30 @@ class CommentsViewModel extends ViewModel {
     }
 
     void addComment() {
-        addComment(addCommentUseCase.execute());
-    }
-
-    MutableLiveData<Boolean> getAddCommentStatus() {
-        return commentAdded;
-    }
-
-    private void addComment(Single<String> single) {
-        disposables.add(single
+        Comment comment = new Comment("comment text");
+        disposables.add(addCommentUseCase.addComment(comment)
                 .subscribeOn(schedulersFacade.io())
                 .observeOn(schedulersFacade.ui())
-                .doOnSubscribe(s -> commentAdded.setValue(true))
-                .doAfterTerminate(() -> commentAdded.setValue(false))
-                .subscribe(
-                        greeting -> response.setValue(Response.success(greeting)),
-                        throwable -> response.setValue(Response.error(throwable))
-                )
-        );
+                .subscribe(() -> onAddCommentSuccess(comment),
+                        t -> Timber.e(t, "error")));
+    }
+
+    private void onAddCommentSuccess(Comment comment) {
+        Timber.d("add comment success");
+        disposables.add(syncCommentUseCase.syncComment(comment)
+                .subscribeOn(schedulersFacade.io())
+                .observeOn(schedulersFacade.ui())
+                .subscribe(() -> onSyncCommentSuccess(comment),
+                        t -> Timber.e(t, "sync comment error")));
+    }
+
+    private void onSyncCommentSuccess(Comment comment) {
+        Timber.d("sync comment success");
+        disposables.add(updateCommentUseCase.updateComment(comment)
+                .subscribeOn(schedulersFacade.io())
+                .observeOn(schedulersFacade.ui())
+                .subscribe(() -> Timber.d("update comment success"),
+                        t -> Timber.e(t, "sync comment error")));
+
     }
 }

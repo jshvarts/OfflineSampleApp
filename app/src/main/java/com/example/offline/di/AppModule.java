@@ -5,7 +5,7 @@ import android.content.Context;
 import com.birbit.android.jobqueue.JobManager;
 import com.example.offline.App;
 import com.example.offline.services.GcmJobService;
-import com.example.offline.services.JobManagerFactory;
+import com.example.offline.jobs.JobManagerFactory;
 import com.example.offline.services.SchedulerJobService;
 
 import javax.inject.Singleton;

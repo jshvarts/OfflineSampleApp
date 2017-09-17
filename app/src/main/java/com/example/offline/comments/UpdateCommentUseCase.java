@@ -4,14 +4,14 @@ import com.example.offline.model.Comment;
 
 import io.reactivex.Completable;
 
-class AddCommentUseCase {
+class UpdateCommentUseCase {
     private final CommentsRepository commentsRepository;
 
-    AddCommentUseCase(CommentsRepository commentsRepository) {
+    UpdateCommentUseCase(CommentsRepository commentsRepository) {
         this.commentsRepository = commentsRepository;
     }
 
-    Completable addComment(Comment comment) {
-        return commentsRepository.addComment(comment);
+    Completable updateComment(Comment comment) {
+        return commentsRepository.updateComment(comment);
     }
 }

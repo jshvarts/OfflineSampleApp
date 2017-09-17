@@ -1,9 +1,18 @@
 package com.example.offline.comments;
 
-import io.reactivex.Single;
+import com.example.offline.model.Comment;
+
+import io.reactivex.Completable;
+import timber.log.Timber;
 
 class CommentsRepository {
-    Single<String> getGreeting() {
-        return Single.just("Hello from CommentsRepository");
+    Completable addComment(Comment comment) {
+        Timber.d("adding comment " + comment);
+        return Completable.complete();
+    }
+
+    Completable updateComment(Comment comment) {
+        Timber.d("updating comment " + comment);
+        return Completable.complete();
     }
 }
