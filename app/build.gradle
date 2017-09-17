@@ -9,6 +9,8 @@ project.ext {
     timberVersion = "4.5.1"
     lifecycleVersion = "1.0.0-alpha3"
     priorityJobQueueVersion = "2.0.1"
+    gcmNetworkManagerVersion = "9.4.0"
+    eventBusVersion = "3.0.0"
 }
 
 android {
@@ -16,7 +18,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.example.daggerandroidmvvm"
-        minSdkVersion 20
+        minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -67,4 +69,10 @@ dependencies {
 
     // Priority Job Queue
     compile "com.birbit:android-priority-jobqueue:$project.priorityJobQueueVersion"
+
+    //GCM Network Manager
+    compile 'com.google.android.gms:play-services-gcm:9.4.0'
+
+    // EventBus from Green Robot
+    compile "org.greenrobot:eventbus:$project.eventBusVersion"
 }
