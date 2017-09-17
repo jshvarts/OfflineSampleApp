@@ -8,6 +8,7 @@ project.ext {
     rxAndroidVersion = "2.0.1"
     timberVersion = "4.5.1"
     lifecycleVersion = "1.0.0-alpha3"
+    priorityJobQueueVersion = "2.0.1"
 }
 
 android {
@@ -15,7 +16,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.example.daggerandroidmvvm"
-        minSdkVersion 19
+        minSdkVersion 20
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -63,4 +64,7 @@ dependencies {
     compile "android.arch.lifecycle:runtime:$project.lifecycleVersion"
     compile "android.arch.lifecycle:extensions:$project.lifecycleVersion"
     annotationProcessor "android.arch.lifecycle:compiler:$project.lifecycleVersion"
+
+    // Priority Job Queue
+    compile "com.birbit:android-priority-jobqueue:$project.priorityJobQueueVersion"
 }
