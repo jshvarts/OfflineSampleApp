@@ -32,13 +32,13 @@ public class AppModule {
 
     @Singleton
     @Provides
-    SchedulerJobService provideSchedulerJobService(JobManager jobManager) {
-        return new SchedulerJobService(jobManager);
+    SchedulerJobService provideSchedulerJobService() {
+        return new SchedulerJobService();
     }
 
     @Singleton
     @Provides
-    GcmJobService provideGcmJobService(JobManager jobManager) {
-        return new GcmJobService(jobManager);
+    GcmJobService provideGcmJobService() {
+        return new GcmJobService();
     }
 }

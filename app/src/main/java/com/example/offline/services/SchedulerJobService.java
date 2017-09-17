@@ -5,13 +5,15 @@ import android.support.annotation.NonNull;
 import com.birbit.android.jobqueue.JobManager;
 import com.birbit.android.jobqueue.scheduling.FrameworkJobSchedulerService;
 
+import javax.inject.Inject;
+
 public class SchedulerJobService extends FrameworkJobSchedulerService {
 
-    private final JobManager jobManager;
+    // we cannot do constructor injection (prefered way of injecting dependencies)
+    // since manifest file requires a default constructor
 
-    public SchedulerJobService(JobManager jobManager) {
-        this.jobManager = jobManager;
-    }
+    @Inject
+    JobManager jobManager;
 
     @NonNull
     @Override
