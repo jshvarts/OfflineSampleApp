@@ -1,6 +1,7 @@
 package com.example.offline.comments;
 
 import com.birbit.android.jobqueue.JobManager;
+import com.example.offline.model.PhotoCommentsRepository;
 import com.example.offline.rx.SchedulersFacade;
 
 import dagger.Module;
@@ -11,12 +12,6 @@ import dagger.Provides;
  */
 @Module
 public class CommentsModule {
-
-    @Provides
-    CommentsRepository provideCommentsRepository() {
-        return new CommentsRepository();
-    }
-
     @Provides
     CommentsViewModelFactory provideCommentsViewModelFactory(AddCommentUseCase addCommentUseCase,
                                                              SyncCommentUseCase syncCommentUseCase,
@@ -26,13 +21,13 @@ public class CommentsModule {
     }
 
     @Provides
-    AddCommentUseCase provideAddCommentUseCase(CommentsRepository commentsRepository) {
-        return new AddCommentUseCase(commentsRepository);
+    AddCommentUseCase provideAddCommentUseCase(PhotoCommentsRepository photoCommentsRepository) {
+        return new AddCommentUseCase(photoCommentsRepository);
     }
 
     @Provides
-    UpdateCommentUseCase provideUpdateCommentUseCase(CommentsRepository commentsRepository) {
-        return new UpdateCommentUseCase(commentsRepository);
+    UpdateCommentUseCase provideUpdateCommentUseCase(PhotoCommentsRepository photoCommentsRepository) {
+        return new UpdateCommentUseCase(photoCommentsRepository);
     }
 
     @Provides

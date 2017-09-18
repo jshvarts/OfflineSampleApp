@@ -36,11 +36,10 @@ class CommentsViewModel extends ViewModel {
     }
 
     void addComment() {
-        Comment comment = new Comment("comment text");
-        disposables.add(addCommentUseCase.addComment(comment)
+        disposables.add(addCommentUseCase.addComment("new comment")
                 .subscribeOn(schedulersFacade.io())
                 .observeOn(schedulersFacade.ui())
-                .subscribe(() -> onAddCommentSuccess(comment),
+                .subscribe(comment -> onAddCommentSuccess(comment),
                         t -> Timber.e(t, "error")));
     }
 
@@ -55,11 +54,5 @@ class CommentsViewModel extends ViewModel {
 
     private void onSyncCommentSuccess(Comment comment) {
         Timber.d("sync comment success");
-        disposables.add(updateCommentUseCase.updateComment(comment)
-                .subscribeOn(schedulersFacade.io())
-                .observeOn(schedulersFacade.ui())
-                .subscribe(() -> Timber.d("update comment success"),
-                        t -> Timber.e(t, "sync comment error")));
-
     }
 }

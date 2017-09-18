@@ -7,10 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.example.offline.R;
-import com.example.offline.model.Comment;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -49,15 +47,7 @@ public class CommentsActivity extends LifecycleActivity {
         RecyclerView.LayoutManager recyclerViewLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
 
-        List<Comment> comments = new ArrayList<>();
-        comments.add(new Comment("comment1", false));
-        comments.add(new Comment("comment2", false));
-        comments.add(new Comment("comment3", false));
-        comments.add(new Comment("comment1", false));
-        comments.add(new Comment("comment2"));
-        comments.add(new Comment("comment3"));
-        comments.add(new Comment("comment1"));
-        recyclerViewAdapter = new CommentListAdapter(comments);
+        recyclerViewAdapter = new CommentListAdapter(new ArrayList<>());
         recyclerView.setAdapter(recyclerViewAdapter);
     }
 }

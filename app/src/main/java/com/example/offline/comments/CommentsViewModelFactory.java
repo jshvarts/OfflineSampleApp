@@ -28,7 +28,10 @@ class CommentsViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
         if (modelClass.isAssignableFrom(CommentsViewModel.class)) {
-            return (T) new CommentsViewModel(addCommentUseCase, syncCommentUseCase, updateCommentUseCase, schedulersFacade);
+            return (T) new CommentsViewModel(addCommentUseCase,
+                    syncCommentUseCase,
+                    updateCommentUseCase,
+                    schedulersFacade);
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }

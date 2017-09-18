@@ -1,17 +1,18 @@
 package com.example.offline.comments;
 
 import com.example.offline.model.Comment;
+import com.example.offline.model.PhotoCommentsRepository;
 
-import io.reactivex.Completable;
+import io.reactivex.Single;
 
 class AddCommentUseCase {
-    private final CommentsRepository commentsRepository;
+    private final PhotoCommentsRepository photoCommentsRepository;
 
-    AddCommentUseCase(CommentsRepository commentsRepository) {
-        this.commentsRepository = commentsRepository;
+    AddCommentUseCase(PhotoCommentsRepository photoCommentsRepository) {
+        this.photoCommentsRepository = photoCommentsRepository;
     }
 
-    Completable addComment(Comment comment) {
-        return commentsRepository.addComment(comment);
+    Single<Comment> addComment(String commentText) {
+        return photoCommentsRepository.addComment(commentText);
     }
 }

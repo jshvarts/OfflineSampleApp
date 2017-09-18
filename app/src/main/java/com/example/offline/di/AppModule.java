@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.birbit.android.jobqueue.JobManager;
 import com.example.offline.App;
+import com.example.offline.model.PhotoCommentsRepository;
 import com.example.offline.services.GcmJobService;
 import com.example.offline.jobs.JobManagerFactory;
 import com.example.offline.services.SchedulerJobService;
@@ -22,6 +23,12 @@ public class AppModule {
     @Provides
     Context provideContext(App application) {
         return application.getApplicationContext();
+    }
+
+    @Singleton
+    @Provides
+    PhotoCommentsRepository providePhotoCommentsRepository() {
+        return new PhotoCommentsRepository();
     }
 
     @Singleton
