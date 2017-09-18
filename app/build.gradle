@@ -10,7 +10,6 @@ project.ext {
     lifecycleVersion = "1.0.0-alpha3"
     priorityJobQueueVersion = "2.0.1"
     gcmNetworkManagerVersion = "9.4.0"
-    eventBusVersion = "3.0.0"
 }
 
 android {
@@ -73,6 +72,6 @@ dependencies {
     //GCM Network Manager
     compile 'com.google.android.gms:play-services-gcm:9.4.0'
 
-    // EventBus from Green Robot
-    compile "org.greenrobot:eventbus:$project.eventBusVersion"
+    // RecyclerView
+    compile "com.android.support:recyclerview-v7:$project.supportLibraryVersion"
 }

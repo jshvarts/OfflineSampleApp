@@ -8,4 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="MyTheme" parent="AppTheme">
+        <item name="android:windowSoftInputMode">stateHidden</item>
+    </style>
+
 </resources>

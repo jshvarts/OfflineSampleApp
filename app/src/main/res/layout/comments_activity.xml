@@ -1,15 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
     tools:context="com.example.offline.comments.CommentsActivity">
 
-    <Button
-        android:id="@+id/add_comment_button"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Comment"/>
+        android:layout_height="wrap_content">
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/photo"
+            android:layout_width="300dp"
+            android:layout_height="250dp"
+            android:src="@drawable/newport_the_breakers"
+            android:scaleType="fitXY"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:id="@+id/photo_caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="The Breakers in Newport, Rhode Island"
+            android:layout_below="@+id/photo"
+            android:layout_centerHorizontal="true" />
+
+        <LinearLayout
+            android:id="@+id/add_comment_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            android:gravity="center_horizontal"
+            android:layout_below="@+id/photo_caption">
+
+            <EditText
+                android:id="@+id/add_comment_edittext"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:hint="comment" />
+
+            <Button
+                android:id="@+id/add_comment_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="add" />
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/comments_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/add_comment_container" />
+
+    </RelativeLayout>
+
+</ScrollView>
