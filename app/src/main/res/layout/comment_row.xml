@@ -4,4 +4,6 @@
     android:id="@+id/comment"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="20dp" />
+    android:paddingTop="2dp"
+    android:paddingBottom="2dp"
+    android:paddingLeft="20dp" />

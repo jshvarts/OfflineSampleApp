@@ -42,6 +42,12 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         return comments == null ? 0 : comments.size();
     }
 
+    public void updateCommentList(List<Comment> newComments) {
+        this.comments.clear();
+        this.comments.addAll(newComments);
+        notifyDataSetChanged();
+    }
+
     /**
      * View holder for shopping list items of this adapter
      */

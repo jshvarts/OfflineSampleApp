@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="25dp"
             android:gravity="center_horizontal"
             android:layout_below="@+id/photo_caption">
 
@@ -46,7 +46,7 @@
                 android:id="@+id/add_comment_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="add" />
+                android:text="add" />
 
         </LinearLayout>
 

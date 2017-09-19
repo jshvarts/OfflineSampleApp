@@ -15,9 +15,9 @@ public class CommentsModule {
     @Provides
     CommentsViewModelFactory provideCommentsViewModelFactory(AddCommentUseCase addCommentUseCase,
                                                              SyncCommentUseCase syncCommentUseCase,
-                                                             UpdateCommentUseCase updateCommentUseCase,
+                                                             GetCommentsUseCase getCommentsUseCase,
                                                              SchedulersFacade schedulersFacade) {
-        return new CommentsViewModelFactory(addCommentUseCase, syncCommentUseCase, updateCommentUseCase, schedulersFacade);
+        return new CommentsViewModelFactory(addCommentUseCase, syncCommentUseCase, getCommentsUseCase, schedulersFacade);
     }
 
     @Provides
@@ -26,12 +26,13 @@ public class CommentsModule {
     }
 
     @Provides
-    UpdateCommentUseCase provideUpdateCommentUseCase(PhotoCommentsRepository photoCommentsRepository) {
-        return new UpdateCommentUseCase(photoCommentsRepository);
+    GetCommentsUseCase provideGetCommentsUseCase(PhotoCommentsRepository photoCommentsRepository) {
+        return new GetCommentsUseCase(photoCommentsRepository);
     }
 
     @Provides
-    SyncCommentUseCase provideSyncCommentUseCase(JobManager jobManager) {
-        return new SyncCommentUseCase(jobManager);
+    SyncCommentUseCase provideSyncCommentUseCase(PhotoCommentsRepository photoCommentsRepository,
+                                                 JobManager jobManager) {
+        return new SyncCommentUseCase(photoCommentsRepository, jobManager);
     }
 }

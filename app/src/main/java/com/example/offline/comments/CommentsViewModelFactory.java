@@ -11,17 +11,17 @@ class CommentsViewModelFactory implements ViewModelProvider.Factory {
 
     private final SyncCommentUseCase syncCommentUseCase;
 
-    private final UpdateCommentUseCase updateCommentUseCase;
+    private final GetCommentsUseCase getCommentsUseCase;
 
     private final SchedulersFacade schedulersFacade;
 
     CommentsViewModelFactory(AddCommentUseCase addCommentUseCase,
                              SyncCommentUseCase syncCommentUseCase,
-                             UpdateCommentUseCase updateCommentUseCase,
+                             GetCommentsUseCase getCommentsUseCase,
                              SchedulersFacade schedulersFacade) {
         this.addCommentUseCase = addCommentUseCase;
         this.syncCommentUseCase = syncCommentUseCase;
-        this.updateCommentUseCase = updateCommentUseCase;
+        this.getCommentsUseCase = getCommentsUseCase;
         this.schedulersFacade = schedulersFacade;
     }
 
@@ -30,7 +30,7 @@ class CommentsViewModelFactory implements ViewModelProvider.Factory {
         if (modelClass.isAssignableFrom(CommentsViewModel.class)) {
             return (T) new CommentsViewModel(addCommentUseCase,
                     syncCommentUseCase,
-                    updateCommentUseCase,
+                    getCommentsUseCase,
                     schedulersFacade);
         }
         throw new IllegalArgumentException("Unknown ViewModel class");

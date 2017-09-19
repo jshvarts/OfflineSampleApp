@@ -1,8 +1,11 @@
 package com.example.offline.model;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -10,15 +13,20 @@ import timber.log.Timber;
 
 public class PhotoCommentsRepository {
 
-    private static final String DUMMY_PHOTO_ID = "1";
+    private AtomicInteger idGenerator = new AtomicInteger();
 
-    // basic in-memory data store implementation
-    private Map<String, Comment> comments = new TreeMap<>();
+    private Comparator<Integer> sortByCommentIdDesc = (Comparator<Integer>) (Integer o1, Integer o2) -> Integer.compare(o2, o1);
 
-    public Single<Comment> addComment(String commentText) {
-        Timber.d("creating comment with text " + commentText);
+    // basic in-memory data store sorted by comment ids
+    private Map<Integer, Comment> comments = new TreeMap<>(sortByCommentIdDesc);
 
-        Comment comment = createComment(commentText);
+    /**
+     * Adds a comment to a given photo
+     */
+    public Single<Comment> addComment(int photoId, String commentText) {
+        Timber.d("creating comment for photo id %s, comment text %s", photoId, commentText);
+
+        Comment comment = createComment(photoId, commentText);
 
         // add new comment
         comments.put(comment.getId(), comment);
@@ -26,8 +34,12 @@ public class PhotoCommentsRepository {
         return Single.just(comment);
     }
 
-    public Completable updateCommentSyncStatus(String commentId) {
-        Timber.d("updating comment sync status for comment id " + commentId);
+    /**
+     * Updates syncPending to false for a given comment
+     */
+    public Completable updateCommentSyncStatus(int commentId) {
+        Timber.d("updating comment sync status for comment id %s", commentId);
+
         if (!comments.containsKey(commentId)) {
             return Completable.error(new RepositoryDataException("No comment exists for id: " + commentId));
         } else {
@@ -41,19 +53,42 @@ public class PhotoCommentsRepository {
     }
 
     /**
-     * Generates new comment with default syncPending = true
+     * Returns comments for a given photo
      */
-    private Comment createComment(String commentText) {
-        String commentId = UUID.randomUUID().toString();
-        long timestamp = System.currentTimeMillis();
-        return new Comment(commentId, DUMMY_PHOTO_ID, commentText, timestamp, false);
+    public Single<List<Comment>> getComments(int photoId) {
+        Timber.d("getting comments for photo id %s", photoId);
+
+        List<Comment> result = new ArrayList<>();
+        for(Map.Entry<Integer, Comment> entry : comments.entrySet()) {
+            Comment comment = entry.getValue();
+            if (comment.getPhotoId() == photoId) {
+                result.add(comment);
+            }
+        }
+        return Single.just(result);
     }
 
     /**
-     * Generates new comment based on existing one
+     * Generates new comment with default syncPending = true
+     */
+    private Comment createComment(int photoId, String commentText) {
+        return new Comment.Builder(idGenerator.incrementAndGet())
+                .photoId(photoId)
+                .text(commentText)
+                .timestamp(System.currentTimeMillis())
+                .syncPending(true)
+                .build();
+    }
+
+    /**
+     * Generates new comment based on the existing one
      */
     private Comment createCommentFromExisting(Comment existing, boolean syncPending) {
-        return new Comment(existing.getId(), existing.getPhotoId(),
-                existing.getText(), existing.getTimestamp(), syncPending);
+        return new Comment.Builder(existing.getId())
+                .photoId(existing.getPhotoId())
+                .text(existing.getText())
+                .timestamp(existing.getTimestamp())
+                .syncPending(syncPending)
+                .build();
     }
 }

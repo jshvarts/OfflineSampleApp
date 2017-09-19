@@ -4,16 +4,18 @@ import com.example.offline.model.Comment;
 import com.example.offline.model.ModelConstants;
 import com.example.offline.model.PhotoCommentsRepository;
 
+import java.util.List;
+
 import io.reactivex.Single;
 
-class AddCommentUseCase {
+class GetCommentsUseCase {
     private final PhotoCommentsRepository photoCommentsRepository;
 
-    AddCommentUseCase(PhotoCommentsRepository photoCommentsRepository) {
+    GetCommentsUseCase(PhotoCommentsRepository photoCommentsRepository) {
         this.photoCommentsRepository = photoCommentsRepository;
     }
 
-    Single<Comment> addComment(String commentText) {
-        return photoCommentsRepository.addComment(ModelConstants.DUMMY_PHOTO_ID, commentText);
+    Single<List<Comment>> getComments() {
+        return photoCommentsRepository.getComments(ModelConstants.DUMMY_PHOTO_ID);
     }
 }
