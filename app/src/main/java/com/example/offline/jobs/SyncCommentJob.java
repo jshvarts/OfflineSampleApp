@@ -16,14 +16,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class AddCommentJob extends Job {
+public class SyncCommentJob extends Job {
 
-    private static final String TAG = AddCommentJob.class.getSimpleName();
+    private static final String TAG = SyncCommentJob.class.getSimpleName();
 
     private final PhotoCommentsRepository photoCommentsRepository;
     private final Comment comment;
 
-    public AddCommentJob(PhotoCommentsRepository photoCommentsRepository, Comment comment) {
+    public SyncCommentJob(PhotoCommentsRepository photoCommentsRepository, Comment comment) {
         super(new Params(Priority.MID)
                 .requireNetwork()
                 .groupBy(TAG)
@@ -36,7 +36,12 @@ public class AddCommentJob extends Job {
     @Override
     public void onAdded() {
         Timber.d("Executing onAdded() for comment " + comment);
-        // no-op
+        try {
+            // simulate delay in processing by sleeping for 20 seconds
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -44,9 +49,6 @@ public class AddCommentJob extends Job {
         Timber.d("Executing onRun() for comment " + comment);
 
         // TODO do network call here: write the comment to the cloud db, etc.
-
-        // simulate delay in processing by sleeping for 2 seconds
-        Thread.sleep(2000);
 
         // If network call succeeded, update local db to reflect that the comment was synced successfully
         photoCommentsRepository.updateCommentSyncStatus(comment.getId())
@@ -63,6 +65,20 @@ public class AddCommentJob extends Job {
 
     @Override
     protected RetryConstraint shouldReRunOnThrowable(@NonNull Throwable throwable, int runCount, int maxRunCount) {
+
+        if(throwable instanceof RemoteSyncDataException) {
+            RemoteSyncDataException exception = (RemoteSyncDataException) throwable;
+
+            // If our sync job used Retrofit2, we'd use the statusCode check below to see
+            // if the http exception is recoverable (worth a retry)
+
+            /*
+            int statusCode = exception.getResponse().raw().code();
+            if (statusCode >= 400 && statusCode < 500) {
+                return RetryConstraint.CANCEL;
+            }
+            */
+        }
         return RetryConstraint.RETRY;
     }
 
@@ -71,7 +87,7 @@ public class AddCommentJob extends Job {
         EventBus.getDefault().post(new SyncCommentSuccessEvent());
     }
 
-    private void onSyncCommentError(Throwable t) {
-        Timber.e(t,"error updating sync status");
+    private void onSyncCommentError(Throwable throwable) {
+        Timber.e(throwable,"error updating sync status. No need to report it.");
     }
 }

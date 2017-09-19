@@ -1,7 +1,7 @@
 package com.example.offline.comments;
 
 import com.birbit.android.jobqueue.JobManager;
-import com.example.offline.jobs.AddCommentJob;
+import com.example.offline.jobs.SyncCommentJob;
 import com.example.offline.model.Comment;
 import com.example.offline.model.PhotoCommentsRepository;
 
@@ -21,6 +21,6 @@ class SyncCommentUseCase {
 
     Completable syncComment(Comment comment) {
         return Completable.fromAction(() ->
-                jobManager.addJobInBackground(new AddCommentJob(photoCommentsRepository, comment)));
+                jobManager.addJobInBackground(new SyncCommentJob(photoCommentsRepository, comment)));
     }
 }
