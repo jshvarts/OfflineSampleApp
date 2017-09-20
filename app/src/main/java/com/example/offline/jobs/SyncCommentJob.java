@@ -8,7 +8,7 @@ import com.birbit.android.jobqueue.Params;
 import com.birbit.android.jobqueue.RetryConstraint;
 import com.example.offline.events.SyncCommentSuccessEvent;
 import com.example.offline.model.Comment;
-import com.example.offline.model.PhotoCommentsRepository;
+import com.example.offline.model.LocalCommentDataStore;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -20,28 +20,22 @@ public class SyncCommentJob extends Job {
 
     private static final String TAG = SyncCommentJob.class.getSimpleName();
 
-    private final PhotoCommentsRepository photoCommentsRepository;
+    private final LocalCommentDataStore localCommentDataStore;
     private final Comment comment;
 
-    public SyncCommentJob(PhotoCommentsRepository photoCommentsRepository, Comment comment) {
+    public SyncCommentJob(LocalCommentDataStore localCommentDataStore, Comment comment) {
         super(new Params(Priority.MID)
                 .requireNetwork()
                 .groupBy(TAG)
                 .singleInstanceBy(TAG)
                 .addTags(TAG));
-        this.photoCommentsRepository = photoCommentsRepository;
+        this.localCommentDataStore = localCommentDataStore;
         this.comment = comment;
     }
 
     @Override
     public void onAdded() {
         Timber.d("Executing onAdded() for comment " + comment);
-        try {
-            // simulate delay in processing by sleeping for 20 seconds
-            Thread.sleep(20000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -49,9 +43,12 @@ public class SyncCommentJob extends Job {
         Timber.d("Executing onRun() for comment " + comment);
 
         // TODO do network call here: write the comment to the cloud db, etc.
+        Thread.sleep(20000);
 
         // If network call succeeded, update local db to reflect that the comment was synced successfully
-        photoCommentsRepository.updateCommentSyncStatus(comment.getId())
+
+        Comment updatedComment = Comment.clone(comment, false);
+        localCommentDataStore.update(updatedComment)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> onSyncCommentSuccess(),
@@ -65,19 +62,13 @@ public class SyncCommentJob extends Job {
 
     @Override
     protected RetryConstraint shouldReRunOnThrowable(@NonNull Throwable throwable, int runCount, int maxRunCount) {
-
         if(throwable instanceof RemoteSyncDataException) {
             RemoteSyncDataException exception = (RemoteSyncDataException) throwable;
 
-            // If our sync job used Retrofit2, we'd use the statusCode check below to see
-            // if the http exception is recoverable (worth a retry)
-
-            /*
-            int statusCode = exception.getResponse().raw().code();
+            int statusCode = exception.getResponse().code();
             if (statusCode >= 400 && statusCode < 500) {
                 return RetryConstraint.CANCEL;
             }
-            */
         }
         return RetryConstraint.RETRY;
     }

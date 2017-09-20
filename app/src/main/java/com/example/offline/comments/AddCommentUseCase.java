@@ -1,19 +1,19 @@
 package com.example.offline.comments;
 
 import com.example.offline.model.Comment;
+import com.example.offline.model.LocalCommentDataStore;
 import com.example.offline.model.ModelConstants;
-import com.example.offline.model.PhotoCommentsRepository;
 
 import io.reactivex.Single;
 
 class AddCommentUseCase {
-    private final PhotoCommentsRepository photoCommentsRepository;
+    private final LocalCommentDataStore localCommentDataStore;
 
-    AddCommentUseCase(PhotoCommentsRepository photoCommentsRepository) {
-        this.photoCommentsRepository = photoCommentsRepository;
+    AddCommentUseCase(LocalCommentDataStore localCommentDataStore) {
+        this.localCommentDataStore = localCommentDataStore;
     }
 
     Single<Comment> addComment(String commentText) {
-        return photoCommentsRepository.addComment(ModelConstants.DUMMY_PHOTO_ID, commentText);
+        return localCommentDataStore.add(ModelConstants.DUMMY_PHOTO_ID, commentText);
     }
 }

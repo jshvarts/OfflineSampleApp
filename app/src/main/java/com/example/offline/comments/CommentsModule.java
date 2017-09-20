@@ -1,7 +1,7 @@
 package com.example.offline.comments;
 
 import com.birbit.android.jobqueue.JobManager;
-import com.example.offline.model.PhotoCommentsRepository;
+import com.example.offline.model.LocalCommentDataStore;
 import com.example.offline.rx.SchedulersFacade;
 
 import dagger.Module;
@@ -21,18 +21,18 @@ public class CommentsModule {
     }
 
     @Provides
-    AddCommentUseCase provideAddCommentUseCase(PhotoCommentsRepository photoCommentsRepository) {
-        return new AddCommentUseCase(photoCommentsRepository);
+    AddCommentUseCase provideAddCommentUseCase(LocalCommentDataStore localCommentDataStore) {
+        return new AddCommentUseCase(localCommentDataStore);
     }
 
     @Provides
-    GetCommentsUseCase provideGetCommentsUseCase(PhotoCommentsRepository photoCommentsRepository) {
-        return new GetCommentsUseCase(photoCommentsRepository);
+    GetCommentsUseCase provideGetCommentsUseCase(LocalCommentDataStore localCommentDataStore) {
+        return new GetCommentsUseCase(localCommentDataStore);
     }
 
     @Provides
-    SyncCommentUseCase provideSyncCommentUseCase(PhotoCommentsRepository photoCommentsRepository,
+    SyncCommentUseCase provideSyncCommentUseCase(LocalCommentDataStore localCommentDataStore,
                                                  JobManager jobManager) {
-        return new SyncCommentUseCase(photoCommentsRepository, jobManager);
+        return new SyncCommentUseCase(localCommentDataStore, jobManager);
     }
 }

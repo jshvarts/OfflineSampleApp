@@ -4,7 +4,9 @@ import android.content.Context;
 
 import com.birbit.android.jobqueue.JobManager;
 import com.example.offline.App;
-import com.example.offline.model.PhotoCommentsRepository;
+import com.example.offline.model.CommentDao;
+import com.example.offline.model.CommentDatabase;
+import com.example.offline.model.LocalCommentDataStore;
 import com.example.offline.services.GcmJobService;
 import com.example.offline.jobs.JobManagerFactory;
 import com.example.offline.services.SchedulerJobService;
@@ -27,8 +29,14 @@ public class AppModule {
 
     @Singleton
     @Provides
-    PhotoCommentsRepository providePhotoCommentsRepository() {
-        return new PhotoCommentsRepository();
+    CommentDao provideCommentDao(Context context) {
+        return CommentDatabase.getInstance(context).commentDao();
+    }
+
+    @Singleton
+    @Provides
+    LocalCommentDataStore provideLocalCommentDataStore(CommentDao commentDao) {
+        return new LocalCommentDataStore(commentDao);
     }
 
     @Singleton

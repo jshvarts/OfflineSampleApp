@@ -7,10 +7,11 @@ project.ext {
     rxJavaVersion = "2.1.0"
     rxAndroidVersion = "2.0.1"
     timberVersion = "4.5.1"
-    lifecycleVersion = "1.0.0-alpha3"
+    lifecycleVersion = "1.0.0-alpha4"
     priorityJobQueueVersion = "2.0.1"
     gcmNetworkManagerVersion = "9.4.0"
     eventBusVersion = "3.0.0"
+    retrofitVersion = "2.3.0"
 }
 
 android {
@@ -29,6 +30,7 @@ android {
             targetCompatibility JavaVersion.VERSION_1_8
         }
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -62,11 +64,6 @@ dependencies {
     // Timber
     compile "com.jakewharton.timber:timber:$project.timberVersion"
 
-    // Lifecycle
-    compile "android.arch.lifecycle:runtime:$project.lifecycleVersion"
-    compile "android.arch.lifecycle:extensions:$project.lifecycleVersion"
-    annotationProcessor "android.arch.lifecycle:compiler:$project.lifecycleVersion"
-
     // Priority Job Queue
     compile "com.birbit:android-priority-jobqueue:$project.priorityJobQueueVersion"
 
@@ -78,4 +75,16 @@ dependencies {
 
     // EventBus from Green Robot
     compile "org.greenrobot:eventbus:$project.eventBusVersion"
+
+    // Retrofit
+    compile "com.squareup.retrofit2:retrofit:$project.retrofitVersion"
+
+    // Room Database
+    implementation "android.arch.persistence.room:runtime:$rootProject.roomVersion"
+    annotationProcessor "android.arch.persistence.room:compiler:$rootProject.roomVersion"
+
+    // Lifecycle
+    compile "android.arch.lifecycle:runtime:$project.lifecycleVersion"
+    compile "android.arch.lifecycle:extensions:$project.lifecycleVersion"
+    annotationProcessor "android.arch.lifecycle:compiler:$project.lifecycleVersion"
 }

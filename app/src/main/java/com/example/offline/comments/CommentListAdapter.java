@@ -34,7 +34,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         } else {
             holder.commentText.setTextColor(Color.BLACK);
         }
-        holder.commentText.setText(comment.getText());
+        holder.commentText.setText(comment.getCommentText());
     }
 
     @Override

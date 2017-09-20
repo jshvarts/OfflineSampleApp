@@ -1,21 +1,21 @@
 package com.example.offline.comments;
 
 import com.example.offline.model.Comment;
+import com.example.offline.model.LocalCommentDataStore;
 import com.example.offline.model.ModelConstants;
-import com.example.offline.model.PhotoCommentsRepository;
 
 import java.util.List;
 
 import io.reactivex.Single;
 
 class GetCommentsUseCase {
-    private final PhotoCommentsRepository photoCommentsRepository;
+    private final LocalCommentDataStore localCommentDataStore;
 
-    GetCommentsUseCase(PhotoCommentsRepository photoCommentsRepository) {
-        this.photoCommentsRepository = photoCommentsRepository;
+    GetCommentsUseCase(LocalCommentDataStore localCommentDataStore) {
+        this.localCommentDataStore = localCommentDataStore;
     }
 
     Single<List<Comment>> getComments() {
-        return photoCommentsRepository.getComments(ModelConstants.DUMMY_PHOTO_ID);
+        return localCommentDataStore.getComments(ModelConstants.DUMMY_PHOTO_ID);
     }
 }

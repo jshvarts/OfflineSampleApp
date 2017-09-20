@@ -4,22 +4,22 @@ buildscript {
 
     ext {
         androidGradlePluginVersion = '3.0.0-alpha5'
+        roomVersion = '1.0.0-alpha4'
     }
 
     repositories {
         jcenter()
-        maven { url 'https://maven.google.com' }
+        google()
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$androidGradlePluginVersion"
-        // in the individual module build.gradle files
     }
 }
 
 allprojects {
     repositories {
-        maven { url 'https://maven.google.com' }
         jcenter()
+        google()
     }
 }
 
