@@ -1,4 +1,4 @@
-package com.example.offline.jobs;
+package com.example.offline.networking;
 
 import okhttp3.Response;
 

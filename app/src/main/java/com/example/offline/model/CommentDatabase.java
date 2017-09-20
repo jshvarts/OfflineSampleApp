@@ -7,8 +7,6 @@ import android.content.Context;
 
 @Database(entities = {Comment.class}, version = 1, exportSchema = false)
 public abstract class CommentDatabase extends RoomDatabase {
-    public abstract CommentDao commentDao();
-
     private static CommentDatabase instance;
 
     public static synchronized CommentDatabase getInstance(Context context) {
@@ -19,4 +17,6 @@ public abstract class CommentDatabase extends RoomDatabase {
         }
         return instance;
     }
+
+    public abstract CommentDao commentDao();
 }

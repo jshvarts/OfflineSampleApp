@@ -2,6 +2,7 @@ package com.example.offline.comments;
 
 import com.birbit.android.jobqueue.JobManager;
 import com.example.offline.model.LocalCommentDataStore;
+import com.example.offline.networking.RemoteSyncCommentService;
 import com.example.offline.rx.SchedulersFacade;
 
 import dagger.Module;
@@ -31,8 +32,9 @@ public class CommentsModule {
     }
 
     @Provides
-    SyncCommentUseCase provideSyncCommentUseCase(LocalCommentDataStore localCommentDataStore,
+    SyncCommentUseCase provideSyncCommentUseCase(RemoteSyncCommentService remoteSyncCommentService,
+                                                 LocalCommentDataStore localCommentDataStore,
                                                  JobManager jobManager) {
-        return new SyncCommentUseCase(localCommentDataStore, jobManager);
+        return new SyncCommentUseCase(remoteSyncCommentService, localCommentDataStore, jobManager);
     }
 }

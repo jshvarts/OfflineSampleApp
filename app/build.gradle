@@ -11,14 +11,15 @@ project.ext {
     priorityJobQueueVersion = "2.0.1"
     gcmNetworkManagerVersion = "9.4.0"
     eventBusVersion = "3.0.0"
-    retrofitVersion = "2.3.0"
+    retrofitVersion = "2.1.0"
+    okHttpVersion = "3.4.1"
 }
 
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "com.example.daggerandroidmvvm"
+        applicationId "com.example.offline"
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
@@ -78,6 +79,13 @@ dependencies {
 
     // Retrofit
     compile "com.squareup.retrofit2:retrofit:$project.retrofitVersion"
+
+    // GSON Converter
+    compile "com.squareup.retrofit2:converter-gson:$project.retrofitVersion"
+
+    // OkHttp Logging Interceptor
+    compile "com.squareup.okhttp3:okhttp:$project.okHttpVersion"
+    compile "com.squareup.okhttp3:logging-interceptor:$project.okHttpVersion"
 
     // Room Database
     implementation "android.arch.persistence.room:runtime:$rootProject.roomVersion"

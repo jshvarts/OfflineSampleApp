@@ -5,18 +5,24 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.google.gson.annotations.Expose;
+
 @Entity
 public class Comment {
 
+    @Expose
     @PrimaryKey(autoGenerate = true)
     private long id;
 
+    @Expose
     @ColumnInfo(name = "photo_id")
     private long photoId;
 
+    @Expose
     @ColumnInfo(name = "comment_text")
     private String commentText;
 
+    @Expose
     @ColumnInfo(name = "timestamp")
     private long timestamp;
 
