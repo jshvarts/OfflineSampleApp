@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import com.birbit.android.jobqueue.Job;
 import com.birbit.android.jobqueue.Params;
 import com.birbit.android.jobqueue.RetryConstraint;
+import com.example.offline.events.DeleteCommentSuccessEvent;
 import com.example.offline.events.SyncCommentSuccessEvent;
 import com.example.offline.model.Comment;
 import com.example.offline.model.LocalCommentDataStore;
@@ -14,13 +15,11 @@ import com.example.offline.networking.RemoteSyncDataException;
 
 import org.greenrobot.eventbus.EventBus;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class SyncCommentJob extends Job {
 
-    private static final String TAG = SyncCommentJob.class.getSimpleName();
+    private static final String TAG = SyncCommentJob.class.getCanonicalName();
 
     private final RemoteSyncCommentService remoteSyncCommentService;
     private final LocalCommentDataStore localCommentDataStore;
@@ -31,9 +30,8 @@ public class SyncCommentJob extends Job {
                           Comment comment) {
         super(new Params(Priority.MID)
                 .requireNetwork()
-                .groupBy(TAG)
-                .singleInstanceBy(TAG)
-                .addTags(TAG));
+                .groupBy(TAG));
+
         this.remoteSyncCommentService = remoteSyncCommentService;
         this.localCommentDataStore = localCommentDataStore;
         this.comment = comment;
@@ -52,17 +50,18 @@ public class SyncCommentJob extends Job {
         remoteSyncCommentService.addComment(comment);
 
         // remote call was successful--update the Comment locally to notify that sync is no longer pending
+        // since the job is already executed on background thread, no need to manage threads in the following Rx chain
         Comment updatedComment = Comment.clone(comment, false);
         localCommentDataStore.update(updatedComment)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> onLocalSyncCommentSuccess(),
-                        t -> onLocalSyncCommentFailure(t));
+                .subscribe(() -> onLocalSyncCommentSuccess(), t -> onLocalSyncCommentFailure(t));
     }
 
     @Override
     protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
-        // no-op
+        Timber.d("canceling job. reason: %d, throwable: %s", cancelReason, throwable);
+        // since sync to remote did not succeed, remove comment from local db
+        localCommentDataStore.delete(comment)
+                .subscribe(() -> onLocalDeleteCommentSuccess(), t -> onLocalDeleteCommentFailure(t));
     }
 
     @Override
@@ -85,6 +84,15 @@ public class SyncCommentJob extends Job {
     }
 
     private void onLocalSyncCommentFailure(Throwable throwable) {
-        Timber.e(throwable,"error updating sync status. No need to report it.");
+        Timber.e(throwable,"error updating sync status.");
+    }
+
+    private void onLocalDeleteCommentSuccess() {
+        Timber.d("success deleting job from local db");
+        EventBus.getDefault().post(new DeleteCommentSuccessEvent());
+    }
+
+    private void onLocalDeleteCommentFailure(Throwable throwable) {
+        Timber.e(throwable,"error deleting job from local db.");
     }
 }

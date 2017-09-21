@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.example.offline.R;
+import com.example.offline.events.DeleteCommentSuccessEvent;
 import com.example.offline.events.SyncCommentSuccessEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -82,6 +83,14 @@ public class CommentsActivity extends LifecycleActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     void onSyncCommentSuccessEvent(SyncCommentSuccessEvent event) {
         Timber.d("received sync comment success event");
+
+        // re-query the model to update UI
+        viewModel.queryComments();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    void onDeleteCommentSuccessEvent(DeleteCommentSuccessEvent event) {
+        Timber.d("received delete comment success event");
 
         // re-query the model to update UI
         viewModel.queryComments();

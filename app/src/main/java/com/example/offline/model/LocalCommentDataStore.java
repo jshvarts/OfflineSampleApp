@@ -39,6 +39,15 @@ public class LocalCommentDataStore {
     }
 
     /**
+     * Deletes a comment
+     */
+    public Completable delete(Comment comment) {
+        Timber.d("deleting comment with id %s", comment.getId());
+
+        return Completable.fromAction(() -> commentDao.delete(comment));
+    }
+
+    /**
      * Returns comments for a given photo
      */
     public Single<List<Comment>> getComments(long photoId) {
