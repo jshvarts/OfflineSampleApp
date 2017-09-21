@@ -16,9 +16,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import timber.log.Timber;
 
 public class SyncCommentJob extends Job {
@@ -51,24 +48,16 @@ public class SyncCommentJob extends Job {
     public void onRun() throws Throwable {
         Timber.d("Executing onRun() for comment " + comment);
 
-        // execute remote call with Retrofit2 asynchronously
-        Call<Comment> call = remoteSyncCommentService.addComment(comment);
-        call.enqueue(new Callback<Comment>() {
-            @Override
-            public void onResponse(Call<Comment> call, Response<Comment> response) {
-                if (response.isSuccessful()) {
-                    Timber.d("successful remote service response: " + response.body());
-                    onRemoteSyncCommentSuccess();
-                } else {
-                    Timber.d("error remote service response: " + response.errorBody());
-                }
-            }
+        // if any exception is thrown, it will be handled by shouldReRunOnThrowable()
+        remoteSyncCommentService.addComment(comment);
 
-            @Override
-            public void onFailure(Call<Comment> call, Throwable t) {
-                onRemoteSyncCommentFailure(t);
-            }
-        });
+        // remote call was successful--update the Comment locally to notify that sync is no longer pending
+        Comment updatedComment = Comment.clone(comment, false);
+        localCommentDataStore.update(updatedComment)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> onLocalSyncCommentSuccess(),
+                        t -> onLocalSyncCommentFailure(t));
     }
 
     @Override
@@ -86,23 +75,8 @@ public class SyncCommentJob extends Job {
                 return RetryConstraint.CANCEL;
             }
         }
+        // if we are here, most likely the connection was lost during job execution
         return RetryConstraint.RETRY;
-    }
-
-    private void onRemoteSyncCommentSuccess() {
-        Timber.d("success syncing comment with remote service");
-
-        // update the comment locally to reflect that sync is no longer pending
-        Comment updatedComment = Comment.clone(comment, false);
-        localCommentDataStore.update(updatedComment)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> onLocalSyncCommentSuccess(),
-                        t -> onLocalSyncCommentFailure(t));
-    }
-
-    private void onRemoteSyncCommentFailure(Throwable throwable) {
-        Timber.e(throwable,"failure syncing comment with remote service");
     }
 
     private void onLocalSyncCommentSuccess() {

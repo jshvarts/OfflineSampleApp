@@ -38,6 +38,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    buildTypes.each {
+        it.buildConfigField 'String', 'API_BASE_URL', "\"http://jsonplaceholder.typicode.com\""
+    }
 }
 
 dependencies {

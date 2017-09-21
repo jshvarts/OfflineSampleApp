@@ -1,6 +1,6 @@
 package com.example.offline.networking;
 
-import okhttp3.Response;
+import retrofit2.Response;
 
 public class RemoteSyncDataException extends Exception {
 
