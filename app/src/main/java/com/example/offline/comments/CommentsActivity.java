@@ -10,8 +10,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.example.offline.R;
-import com.example.offline.events.DeleteCommentSuccessEvent;
-import com.example.offline.events.SyncCommentSuccessEvent;
+import com.example.offline.events.DeleteCommentRequestEvent;
+import com.example.offline.events.UpdateCommentRequestEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -81,19 +81,15 @@ public class CommentsActivity extends LifecycleActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    void onSyncCommentSuccessEvent(SyncCommentSuccessEvent event) {
-        Timber.d("received sync comment success event");
-
-        // re-query the model to update UI
-        viewModel.queryComments();
+    void onUpdateCommentRequestEvent(UpdateCommentRequestEvent event) {
+        Timber.d("received update comment request event");
+        viewModel.updateComment(event.getComment());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    void onDeleteCommentSuccessEvent(DeleteCommentSuccessEvent event) {
-        Timber.d("received delete comment success event");
-
-        // re-query the model to update UI
-        viewModel.queryComments();
+    void onDeleteCommentRequestEvent(DeleteCommentRequestEvent event) {
+        Timber.d("received delete comment request event");
+        viewModel.deleteComment(event.getComment());
     }
 
     private void hideKeyboard() {

@@ -7,8 +7,10 @@ import android.arch.persistence.room.PrimaryKey;
 
 import com.google.gson.annotations.Expose;
 
+import java.io.Serializable;
+
 @Entity
-public class Comment {
+public class Comment implements Serializable {
 
     @Expose
     @PrimaryKey(autoGenerate = true)

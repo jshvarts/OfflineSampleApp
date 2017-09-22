@@ -15,24 +15,25 @@ import timber.log.Timber;
 class CommentsViewModel extends ViewModel {
 
     private final AddCommentUseCase addCommentUseCase;
-
     private final SyncCommentUseCase syncCommentUseCase;
-
     private final GetCommentsUseCase getCommentsUseCase;
-
+    private final UpdateCommentUseCase updateCommentUseCase;
+    private final DeleteCommentUseCase deleteCommentUseCase;
     private final SchedulersFacade schedulersFacade;
-
     private final CompositeDisposable disposables = new CompositeDisposable();
-
     private MutableLiveData<List<Comment>> commentsLiveData = new MutableLiveData<>();
 
     CommentsViewModel(AddCommentUseCase addCommentUseCase,
                       SyncCommentUseCase syncCommentUseCase,
                       GetCommentsUseCase getCommentsUseCase,
+                      UpdateCommentUseCase updateCommentUseCase,
+                      DeleteCommentUseCase deleteCommentUseCase,
                       SchedulersFacade schedulersFacade) {
         this.addCommentUseCase = addCommentUseCase;
         this.syncCommentUseCase = syncCommentUseCase;
         this.getCommentsUseCase = getCommentsUseCase;
+        this.updateCommentUseCase = updateCommentUseCase;
+        this.deleteCommentUseCase = deleteCommentUseCase;
         this.schedulersFacade = schedulersFacade;
 
         queryComments();
@@ -63,6 +64,29 @@ class CommentsViewModel extends ViewModel {
                 .observeOn(schedulersFacade.ui())
                 .subscribe(commentList -> onGetCommentsSuccess(commentList),
                         t -> Timber.e(t, "get comments error")));
+    }
+
+    void updateComment(Comment comment) {
+        Timber.d("comment to update: " + comment);
+        disposables.add(updateCommentUseCase.updateComment(comment)
+                .subscribeOn(schedulersFacade.io())
+                .observeOn(schedulersFacade.ui())
+                .subscribe(() -> onUpdateOrDeleteCommentSuccess(),
+                        t -> Timber.e(t, "update comment error")));
+    }
+
+    void deleteComment(Comment comment) {
+        disposables.add(deleteCommentUseCase.deleteComment(comment)
+                .subscribeOn(schedulersFacade.io())
+                .observeOn(schedulersFacade.ui())
+                .subscribe(() -> onUpdateOrDeleteCommentSuccess(),
+                        t -> Timber.e(t, "delete comment error")));
+    }
+
+    private void onUpdateOrDeleteCommentSuccess() {
+        Timber.d("update or delete comment success")  ;
+        //re-query comments
+        queryComments();
     }
 
     private void onGetCommentsSuccess(List<Comment> commentList) {

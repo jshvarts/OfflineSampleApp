@@ -2,7 +2,6 @@ package com.example.offline.comments;
 
 import com.birbit.android.jobqueue.JobManager;
 import com.example.offline.model.LocalCommentDataStore;
-import com.example.offline.networking.RemoteSyncCommentService;
 import com.example.offline.rx.SchedulersFacade;
 
 import dagger.Module;
@@ -17,8 +16,11 @@ public class CommentsModule {
     CommentsViewModelFactory provideCommentsViewModelFactory(AddCommentUseCase addCommentUseCase,
                                                              SyncCommentUseCase syncCommentUseCase,
                                                              GetCommentsUseCase getCommentsUseCase,
+                                                             UpdateCommentUseCase updateCommentUseCase,
+                                                             DeleteCommentUseCase deleteCommentUseCase,
                                                              SchedulersFacade schedulersFacade) {
-        return new CommentsViewModelFactory(addCommentUseCase, syncCommentUseCase, getCommentsUseCase, schedulersFacade);
+        return new CommentsViewModelFactory(addCommentUseCase, syncCommentUseCase, getCommentsUseCase,
+                updateCommentUseCase, deleteCommentUseCase, schedulersFacade);
     }
 
     @Provides
@@ -32,9 +34,17 @@ public class CommentsModule {
     }
 
     @Provides
-    SyncCommentUseCase provideSyncCommentUseCase(RemoteSyncCommentService remoteSyncCommentService,
-                                                 LocalCommentDataStore localCommentDataStore,
-                                                 JobManager jobManager) {
-        return new SyncCommentUseCase(remoteSyncCommentService, localCommentDataStore, jobManager);
+    SyncCommentUseCase provideSyncCommentUseCase(JobManager jobManager) {
+        return new SyncCommentUseCase(jobManager);
+    }
+
+    @Provides
+    UpdateCommentUseCase provideUpdateCommentUseCase(LocalCommentDataStore localCommentDataStore) {
+        return new UpdateCommentUseCase(localCommentDataStore);
+    }
+
+    @Provides
+    DeleteCommentUseCase provideDeleteCommentUseCase(LocalCommentDataStore localCommentDataStore) {
+        return new DeleteCommentUseCase(localCommentDataStore);
     }
 }

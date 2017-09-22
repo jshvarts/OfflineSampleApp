@@ -7,7 +7,6 @@ import com.example.offline.App;
 import com.example.offline.model.CommentDao;
 import com.example.offline.model.CommentDatabase;
 import com.example.offline.model.LocalCommentDataStore;
-import com.example.offline.networking.RemoteSyncCommentService;
 import com.example.offline.services.GcmJobService;
 import com.example.offline.jobs.JobManagerFactory;
 import com.example.offline.services.SchedulerJobService;
@@ -56,11 +55,5 @@ public class AppModule {
     @Provides
     GcmJobService provideGcmJobService() {
         return new GcmJobService();
-    }
-
-    @Singleton
-    @Provides
-    RemoteSyncCommentService provideRemoteSyncCommentService() {
-        return new RemoteSyncCommentService();
     }
 }

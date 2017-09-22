@@ -14,7 +14,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import timber.log.Timber;
 
-public class RemoteSyncCommentService {
+public final class RemoteSyncCommentService {
+
+    private static RemoteSyncCommentService instance;
 
     private final Retrofit retrofit;
 
@@ -36,6 +38,13 @@ public class RemoteSyncCommentService {
                 .baseUrl(BuildConfig.API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
+    }
+
+    public static synchronized RemoteSyncCommentService getInstance() {
+        if (instance == null) {
+            instance = new RemoteSyncCommentService();
+        }
+        return instance;
     }
 
     public void addComment(Comment comment) throws IOException, RemoteSyncDataException {
