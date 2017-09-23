@@ -49,7 +49,7 @@ public class SyncCommentJob extends Job {
     @Override
     protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
         Timber.d("canceling job. reason: %d, throwable: %s", cancelReason, throwable);
-        // since sync to remote did not succeed--we need to remove comment from local db
+        // sync to remote failed--remove comment from local db
         EventBus.getDefault().post(new DeleteCommentRequestEvent(comment));
     }
 
