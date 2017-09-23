@@ -1,5 +1,6 @@
 package com.example.offline.model;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -21,5 +22,5 @@ public interface CommentDao {
     void delete(Comment comment);
 
     @Query("SELECT * FROM comment WHERE photo_id = :photoId ORDER BY timestamp DESC")
-    List<Comment> getComments(long photoId);
+    LiveData<List<Comment>> getComments(long photoId);
 }

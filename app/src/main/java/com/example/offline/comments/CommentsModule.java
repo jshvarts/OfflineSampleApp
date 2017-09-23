@@ -16,11 +16,15 @@ public class CommentsModule {
     CommentsViewModelFactory provideCommentsViewModelFactory(AddCommentUseCase addCommentUseCase,
                                                              SyncCommentUseCase syncCommentUseCase,
                                                              GetCommentsUseCase getCommentsUseCase,
-                                                             UpdateCommentUseCase updateCommentUseCase,
+                                                             SchedulersFacade schedulersFacade) {
+        return new CommentsViewModelFactory(addCommentUseCase, syncCommentUseCase, getCommentsUseCase, schedulersFacade);
+    }
+
+    @Provides
+    SyncCommentLifecycleObserver provideSyncCommentLifecycleObserver(UpdateCommentUseCase updateCommentUseCase,
                                                              DeleteCommentUseCase deleteCommentUseCase,
                                                              SchedulersFacade schedulersFacade) {
-        return new CommentsViewModelFactory(addCommentUseCase, syncCommentUseCase, getCommentsUseCase,
-                updateCommentUseCase, deleteCommentUseCase, schedulersFacade);
+        return new SyncCommentLifecycleObserver(updateCommentUseCase, deleteCommentUseCase, schedulersFacade);
     }
 
     @Provides

@@ -10,12 +10,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.example.offline.R;
-import com.example.offline.events.DeleteCommentRequestEvent;
-import com.example.offline.events.UpdateCommentRequestEvent;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -25,12 +19,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dagger.android.AndroidInjection;
-import timber.log.Timber;
 
 public class CommentsActivity extends LifecycleActivity {
 
     @Inject
     CommentsViewModelFactory viewModelFactory;
+
+    @Inject
+    SyncCommentLifecycleObserver syncCommentLifecycleObserver;
 
     @BindView(R.id.add_comment_edittext)
     EditText addCommentEditText;
@@ -50,23 +46,13 @@ public class CommentsActivity extends LifecycleActivity {
 
         ButterKnife.bind(this);
 
+        getLifecycle().addObserver(syncCommentLifecycleObserver);
+
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CommentsViewModel.class);
 
-        viewModel.getLiveComments().observe(this, commentList -> recyclerViewAdapter.updateCommentList(commentList));
+        subscribeToComments();
 
         initRecyclerView();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        EventBus.getDefault().unregister(this);
     }
 
     @OnClick(R.id.add_comment_button)
@@ -74,22 +60,14 @@ public class CommentsActivity extends LifecycleActivity {
 
         hideKeyboard();
 
-        // TODO add comment text validation
+        // TODO add comment validation
         viewModel.addComment(addCommentEditText.getText().toString());
 
         clearEditText();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    void onUpdateCommentRequestEvent(UpdateCommentRequestEvent event) {
-        Timber.d("received update comment request event");
-        viewModel.updateComment(event.getComment());
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    void onDeleteCommentRequestEvent(DeleteCommentRequestEvent event) {
-        Timber.d("received delete comment request event");
-        viewModel.deleteComment(event.getComment());
+    private void subscribeToComments() {
+        viewModel.getComments().observe(this, commentList -> recyclerViewAdapter.updateCommentList(commentList));
     }
 
     private void hideKeyboard() {

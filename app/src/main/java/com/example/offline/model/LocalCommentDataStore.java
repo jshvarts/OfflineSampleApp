@@ -1,5 +1,7 @@
 package com.example.offline.model;
 
+import android.arch.lifecycle.LiveData;
+
 import java.util.List;
 
 import io.reactivex.Completable;
@@ -19,7 +21,6 @@ public class LocalCommentDataStore {
      */
     public Single<Comment> add(long photoId, String commentText) {
         Timber.d("creating comment for photo id %s, comment text %s", photoId, commentText);
-
         Comment comment = new Comment(photoId, commentText);
 
         return Single.fromCallable(() -> {
@@ -48,11 +49,10 @@ public class LocalCommentDataStore {
     }
 
     /**
-     * Returns comments for a given photo
+     * Returns observable stream of comments for a given photo
      */
-    public Single<List<Comment>> getComments(long photoId) {
+    public LiveData<List<Comment>> getComments(long photoId) {
         Timber.d("getting comments for photo id %s", photoId);
-
-        return Single.fromCallable(() -> commentDao.getComments(photoId));
+        return commentDao.getComments(photoId);
     }
 }

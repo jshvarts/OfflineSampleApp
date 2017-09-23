@@ -11,6 +11,8 @@ import com.example.offline.model.Comment;
 
 import java.util.List;
 
+import timber.log.Timber;
+
 public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.ViewHolder> {
 
     private final List<Comment> comments;
@@ -43,6 +45,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     }
 
     public void updateCommentList(List<Comment> newComments) {
+        Timber.d("Got new comments " + newComments.size());
         this.comments.clear();
         this.comments.addAll(newComments);
         notifyDataSetChanged();
