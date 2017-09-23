@@ -20,7 +20,7 @@ This background job is designed to be persistent--it is guaranteed to execute ev
 ## Libraries Used
 
 * Patterns and frameworks
-	* MVVM (Model-View-ViewModel) using Google's new Architecture components `ViewModel`, `LiveData`, etc.
+	* MVVM (Model-View-ViewModel) using Google's new Architecture components `ViewModel`, `LiveData`, `LifecycleObserver`, etc.
 	* [Clean Architecture](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html) with `ViewModel` interacting with UseCases and the latter interacting with local database. Making each layer highly testable.
 * Database
 	* [Room Persistence Library](https://developer.android.com/topic/libraries/architecture/room.html), part of Google's new Architecture components.

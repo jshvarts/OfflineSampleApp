@@ -13,11 +13,11 @@ import dagger.Provides;
 @Module
 public class CommentsModule {
     @Provides
-    CommentsViewModelFactory provideCommentsViewModelFactory(AddCommentUseCase addCommentUseCase,
+    CommentsViewModelFactory provideCommentsViewModelFactory(GetCommentsUseCase getCommentsUseCase,
+                                                             AddCommentUseCase addCommentUseCase,
                                                              SyncCommentUseCase syncCommentUseCase,
-                                                             GetCommentsUseCase getCommentsUseCase,
                                                              SchedulersFacade schedulersFacade) {
-        return new CommentsViewModelFactory(addCommentUseCase, syncCommentUseCase, getCommentsUseCase, schedulersFacade);
+        return new CommentsViewModelFactory(getCommentsUseCase, addCommentUseCase, syncCommentUseCase, schedulersFacade);
     }
 
     @Provides

@@ -1,6 +1,5 @@
 package com.example.offline.model;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -9,6 +8,8 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import java.util.List;
+
+import io.reactivex.Flowable;
 
 @Dao
 public interface CommentDao {
@@ -22,5 +23,5 @@ public interface CommentDao {
     void delete(Comment comment);
 
     @Query("SELECT * FROM comment WHERE photo_id = :photoId ORDER BY timestamp DESC")
-    LiveData<List<Comment>> getComments(long photoId);
+    Flowable<List<Comment>> getComments(long photoId);
 }

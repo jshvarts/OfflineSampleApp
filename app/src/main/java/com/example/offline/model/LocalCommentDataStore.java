@@ -1,10 +1,9 @@
 package com.example.offline.model;
 
-import android.arch.lifecycle.LiveData;
-
 import java.util.List;
 
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import timber.log.Timber;
 
@@ -49,9 +48,9 @@ public class LocalCommentDataStore {
     }
 
     /**
-     * Returns observable stream of comments for a given photo
+     * Returns Flowable stream of comments for a given photo
      */
-    public LiveData<List<Comment>> getComments(long photoId) {
+    public Flowable<List<Comment>> getComments(long photoId) {
         Timber.d("getting comments for photo id %s", photoId);
         return commentDao.getComments(photoId);
     }

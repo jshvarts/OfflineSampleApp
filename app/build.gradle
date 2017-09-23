@@ -93,6 +93,7 @@ dependencies {
 
     // Room Database
     implementation "android.arch.persistence.room:runtime:$rootProject.roomVersion"
+    implementation "android.arch.persistence.room:rxjava2:$rootProject.roomVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$rootProject.roomVersion"
 
     // Lifecycle

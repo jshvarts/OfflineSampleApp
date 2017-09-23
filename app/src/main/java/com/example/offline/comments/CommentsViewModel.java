@@ -1,6 +1,7 @@
 package com.example.offline.comments;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.example.offline.model.Comment;
@@ -13,23 +14,23 @@ import timber.log.Timber;
 
 class CommentsViewModel extends ViewModel {
 
+    private final GetCommentsUseCase getCommentsUseCase;
     private final AddCommentUseCase addCommentUseCase;
     private final SyncCommentUseCase syncCommentUseCase;
-    private final GetCommentsUseCase getCommentsUseCase;
     private final SchedulersFacade schedulersFacade;
     private final CompositeDisposable disposables = new CompositeDisposable();
-    private LiveData<List<Comment>> commentsLiveData = null;
+    private MutableLiveData<List<Comment>> commentsLiveData = new MutableLiveData<>();
 
-    CommentsViewModel(AddCommentUseCase addCommentUseCase,
+    CommentsViewModel(GetCommentsUseCase getCommentsUseCase,
+                      AddCommentUseCase addCommentUseCase,
                       SyncCommentUseCase syncCommentUseCase,
-                      GetCommentsUseCase getCommentsUseCase,
                       SchedulersFacade schedulersFacade) {
+        this.getCommentsUseCase = getCommentsUseCase;
         this.addCommentUseCase = addCommentUseCase;
         this.syncCommentUseCase = syncCommentUseCase;
-        this.getCommentsUseCase = getCommentsUseCase;
         this.schedulersFacade = schedulersFacade;
 
-        commentsLiveData = getCommentsUseCase.getComments();
+        loadComments();
     }
 
     @Override
@@ -37,12 +38,19 @@ class CommentsViewModel extends ViewModel {
         disposables.clear();
     }
 
+    void loadComments() {
+        disposables.add(getCommentsUseCase.getComments()
+                .subscribeOn(schedulersFacade.io())
+                .observeOn(schedulersFacade.ui())
+                .subscribe(commentList -> commentsLiveData.setValue(commentList),
+                        t -> Timber.e(t, "get comments error")));
+    }
+
     void addComment(String commentText) {
-        Timber.d("adding comment " + commentText);
         disposables.add(addCommentUseCase.addComment(commentText)
                 .subscribeOn(schedulersFacade.io())
                 .observeOn(schedulersFacade.ui())
-                .subscribe(comment -> onAddCommentSuccess(comment),
+                .subscribe(comment -> syncComment(comment),
                         t -> Timber.e(t, "add comment error")));
     }
 
@@ -50,18 +58,14 @@ class CommentsViewModel extends ViewModel {
      * Exposes the LiveData Comments query so the UI can observe it
      */
     LiveData<List<Comment>> getComments() {
-        Timber.d("getting comments");
         return commentsLiveData;
     }
 
-    private void onAddCommentSuccess(Comment comment) {
-        Timber.d("add comment success");
-
-        // send sync comment request
+    private void syncComment(Comment comment) {
         disposables.add(syncCommentUseCase.syncComment(comment)
                 .subscribeOn(schedulersFacade.io())
                 .observeOn(schedulersFacade.ui())
-                .subscribe(() -> Timber.d("sync comment request sent success"),
-                        t -> Timber.e(t, "sync comment request sent error")));
+                .subscribe(() -> Timber.d("sync comment request sent"),
+                        t -> Timber.e(t, "sync comment request error")));
     }
 }

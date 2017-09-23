@@ -1,12 +1,12 @@
 package com.example.offline.comments;
 
-import android.arch.lifecycle.LiveData;
-
 import com.example.offline.model.Comment;
 import com.example.offline.model.LocalCommentDataStore;
 import com.example.offline.model.ModelConstants;
 
 import java.util.List;
+
+import io.reactivex.Flowable;
 
 class GetCommentsUseCase {
     private final LocalCommentDataStore localCommentDataStore;
@@ -15,7 +15,7 @@ class GetCommentsUseCase {
         this.localCommentDataStore = localCommentDataStore;
     }
 
-    LiveData<List<Comment>> getComments() {
+    Flowable<List<Comment>> getComments() {
         return localCommentDataStore.getComments(ModelConstants.DUMMY_PHOTO_ID);
     }
 }
