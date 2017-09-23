@@ -1,9 +1,11 @@
 package com.example.offline.comments;
 
-import android.arch.lifecycle.LifecycleActivity;
+import android.arch.lifecycle.LifecycleRegistry;
+import android.arch.lifecycle.LifecycleRegistryOwner;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.inputmethod.InputMethodManager;
@@ -20,7 +22,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dagger.android.AndroidInjection;
 
-public class CommentsActivity extends LifecycleActivity {
+public class CommentsActivity extends AppCompatActivity implements LifecycleRegistryOwner {
 
     @Inject
     CommentsViewModelFactory viewModelFactory;
@@ -37,6 +39,8 @@ public class CommentsActivity extends LifecycleActivity {
     private CommentListAdapter recyclerViewAdapter;
 
     private CommentsViewModel viewModel;
+
+    private LifecycleRegistry registry = new LifecycleRegistry(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,5 +93,10 @@ public class CommentsActivity extends LifecycleActivity {
 
         recyclerViewAdapter = new CommentListAdapter(new ArrayList<>());
         recyclerView.setAdapter(recyclerViewAdapter);
+    }
+
+    @Override
+    public LifecycleRegistry getLifecycle() {
+        return registry;
     }
 }
