@@ -9,8 +9,8 @@ import javax.inject.Inject;
 
 public class SchedulerJobService extends FrameworkJobSchedulerService {
 
-    // we cannot do constructor injection (prefered way of injecting dependencies)
-    // since manifest file requires a default constructor
+    // we cannot do constructor injection (preferred way of injecting dependencies)
+    // since manifest file requires a default no-arg constructor
 
     @Inject
     JobManager jobManager;

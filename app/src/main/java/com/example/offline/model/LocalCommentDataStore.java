@@ -25,7 +25,7 @@ public class LocalCommentDataStore {
         return Single.fromCallable(() -> {
             long rowId = commentDao.add(comment);
             Timber.d("comment stored " + rowId);
-            return Comment.clone(comment, rowId);
+            return CommentUtils.clone(comment, rowId);
         });
     }
 

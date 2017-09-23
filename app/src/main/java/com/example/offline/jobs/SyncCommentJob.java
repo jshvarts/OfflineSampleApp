@@ -9,8 +9,9 @@ import com.birbit.android.jobqueue.RetryConstraint;
 import com.example.offline.events.DeleteCommentRequestEvent;
 import com.example.offline.events.UpdateCommentRequestEvent;
 import com.example.offline.model.Comment;
-import com.example.offline.networking.RemoteSyncCommentService;
-import com.example.offline.networking.RemoteSyncDataException;
+import com.example.offline.model.CommentUtils;
+import com.example.offline.networking.RemoteCommentService;
+import com.example.offline.networking.RemoteException;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -39,10 +40,10 @@ public class SyncCommentJob extends Job {
         Timber.d("Executing onRun() for comment " + comment);
 
         // if any exception is thrown, it will be handled by shouldReRunOnThrowable()
-        RemoteSyncCommentService.getInstance().addComment(comment);
+        RemoteCommentService.getInstance().addComment(comment);
 
         // remote call was successful--update the Comment locally to notify that sync is no longer pending
-        Comment updatedComment = Comment.clone(comment, false);
+        Comment updatedComment = CommentUtils.clone(comment, false);
         EventBus.getDefault().post(new UpdateCommentRequestEvent(updatedComment));
     }
 
@@ -55,8 +56,8 @@ public class SyncCommentJob extends Job {
 
     @Override
     protected RetryConstraint shouldReRunOnThrowable(@NonNull Throwable throwable, int runCount, int maxRunCount) {
-        if(throwable instanceof RemoteSyncDataException) {
-            RemoteSyncDataException exception = (RemoteSyncDataException) throwable;
+        if(throwable instanceof RemoteException) {
+            RemoteException exception = (RemoteException) throwable;
 
             int statusCode = exception.getResponse().code();
             if (statusCode >= 400 && statusCode < 500) {

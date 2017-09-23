@@ -12,7 +12,7 @@ public abstract class CommentDatabase extends RoomDatabase {
     public static synchronized CommentDatabase getInstance(Context context) {
         if (instance == null) {
             instance = Room
-                    .databaseBuilder(context.getApplicationContext(), CommentDatabase.class, "offlinedb")
+                    .databaseBuilder(context.getApplicationContext(), CommentDatabase.class, ModelConstants.DB_NAME)
                     .build();
         }
         return instance;

@@ -7,15 +7,17 @@
 Offline App (or Offline-First App) enables user to seamlessly interact with it by using local device storage and then synchronizing the data with some remote storage (cloud database, etc) later via a background process.
 
 With offline apps
-1) users no longer get error messages asking to try again later.
-2) users do not see any loading bar since all actions are performed almost instantly using local storage.
-3) users benefit from faster loading times and conserving battery life.
+1) users no longer get error messages due to network connection problems.
+2) users benefit from faster loading times and conserving battery life.
+3) users do not see any loading bar since their actions are performed against fast local storage.
 
-## Project Overview
+## App Overview
 
-This Android app is a working sample app that showcases offline photo commenting functionality. Users are able to comment on a photo using and comments are first stored in local Room database. This action kicks off a background job (implemented using Android Priority JobQueue library) to synchronize this data whenever the device is connected to the Internet. The job is persistent and is guaranteed to execute even if users restart their app or their device while waiting for network connection.        
+The Android app is a working sample that showcases offline commenting capability. User's comments are stored in local Room database first. A background job (implemented using Android Priority JobQueue library) is then spawned to synchronize local data with a remote database whenever Internet connection is available. 
 
-## Libraries
+This background job is designed to be persistent--it is guaranteed to execute even after app or device restarts while waiting for the network connection.
+
+## Libraries Used
 
 * Patterns and frameworks
 	* MVVM (Model-View-ViewModel) using Google's new Architecture components `ViewModel`, `LiveData`, etc.

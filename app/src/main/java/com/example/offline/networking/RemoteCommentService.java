@@ -14,13 +14,13 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import timber.log.Timber;
 
-public final class RemoteSyncCommentService {
+public final class RemoteCommentService {
 
-    private static RemoteSyncCommentService instance;
+    private static RemoteCommentService instance;
 
     private final Retrofit retrofit;
 
-    public RemoteSyncCommentService() {
+    public RemoteCommentService() {
 
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -40,21 +40,21 @@ public final class RemoteSyncCommentService {
                 .build();
     }
 
-    public static synchronized RemoteSyncCommentService getInstance() {
+    public static synchronized RemoteCommentService getInstance() {
         if (instance == null) {
-            instance = new RemoteSyncCommentService();
+            instance = new RemoteCommentService();
         }
         return instance;
     }
 
-    public void addComment(Comment comment) throws IOException, RemoteSyncDataException {
-        RemoteCommentDataStore service = retrofit.create(RemoteCommentDataStore.class);
+    public void addComment(Comment comment) throws IOException, RemoteException {
+        RemoteCommentEndpoint service = retrofit.create(RemoteCommentEndpoint.class);
 
-        // Remote call can be executed synchronously since the job is already backgrounded.
+        // Remote call can be executed synchronously since the job calling it is already backgrounded.
         Response<Comment> response = service.addComment(comment).execute();
 
         if (response == null || !response.isSuccessful() || response.errorBody() != null) {
-            throw new RemoteSyncDataException(response);
+            throw new RemoteException(response);
         }
 
         Timber.d("successful remote response: " + response.body());

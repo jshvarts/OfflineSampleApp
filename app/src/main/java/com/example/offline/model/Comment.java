@@ -9,6 +9,9 @@ import com.google.gson.annotations.Expose;
 
 import java.io.Serializable;
 
+/**
+ * Immutable POJO that represents a Comment
+ */
 @Entity
 public class Comment implements Serializable {
 
@@ -65,16 +68,6 @@ public class Comment implements Serializable {
         this.commentText = commentText;
         this.timestamp = timestamp;
         this.syncPending = syncPending;
-    }
-
-    @Ignore
-    public static Comment clone(Comment from, boolean syncPending) {
-        return new Comment(from.id, from.photoId, from.commentText, from.timestamp, false);
-    }
-
-    @Ignore
-    public static Comment clone(Comment from, long id) {
-        return new Comment(id, from.photoId, from.commentText, from.timestamp, false);
     }
 
     @Override
