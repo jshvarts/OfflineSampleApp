@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/MyTheme">
 
-        <activity android:name="com.example.offline.comments.CommentsActivity">
+        <activity android:name="com.example.offline.view.CommentsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,11 +22,11 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".services.SchedulerJobService"
+        <service android:name=".domain.services.jobs.SchedulerJobService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <service
-            android:name=".services.GcmJobService"
+            android:name=".domain.services.jobs.GcmJobService"
             android:exported="true"
             android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE">
             <intent-filter>

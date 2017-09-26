@@ -1,7 +1,6 @@
 package com.example.offline.di;
 
-import com.example.offline.comments.CommentsActivity;
-import com.example.offline.comments.CommentsModule;
+import com.example.offline.view.CommentsActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -12,7 +11,7 @@ import dagger.android.ContributesAndroidInjector;
 @Module
 public abstract class BuildersModule {
 
-    @ContributesAndroidInjector(modules = CommentsModule.class)
+    @ContributesAndroidInjector(modules = CommentsActivityModule.class)
     abstract CommentsActivity bindCommentsActivity();
 
     // Add bindings for other sub-components here

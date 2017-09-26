@@ -4,12 +4,15 @@ import android.content.Context;
 
 import com.birbit.android.jobqueue.JobManager;
 import com.example.offline.App;
-import com.example.offline.model.CommentDao;
-import com.example.offline.model.CommentDatabase;
-import com.example.offline.model.LocalCommentDataStore;
-import com.example.offline.services.GcmJobService;
-import com.example.offline.jobs.JobManagerFactory;
-import com.example.offline.services.SchedulerJobService;
+import com.example.offline.data.CommentDao;
+import com.example.offline.data.CommentDatabase;
+import com.example.offline.data.LocalCommentDataStore;
+import com.example.offline.data.RemoteCommentDataStore;
+import com.example.offline.domain.LocalCommentRepository;
+import com.example.offline.domain.RemoteCommentRepository;
+import com.example.offline.domain.services.jobs.GcmJobService;
+import com.example.offline.domain.services.jobs.JobManagerFactory;
+import com.example.offline.domain.services.jobs.SchedulerJobService;
 
 import javax.inject.Singleton;
 
@@ -29,18 +32,6 @@ public class AppModule {
 
     @Singleton
     @Provides
-    CommentDao provideCommentDao(Context context) {
-        return CommentDatabase.getInstance(context).commentDao();
-    }
-
-    @Singleton
-    @Provides
-    LocalCommentDataStore provideLocalCommentDataStore(CommentDao commentDao) {
-        return new LocalCommentDataStore(commentDao);
-    }
-
-    @Singleton
-    @Provides
     JobManager provideJobManager(Context context) {
         return JobManagerFactory.getJobManager(context);
     }
@@ -55,5 +46,23 @@ public class AppModule {
     @Provides
     GcmJobService provideGcmJobService() {
         return new GcmJobService();
+    }
+
+    @Singleton
+    @Provides
+    CommentDao provideCommentDao(Context context) {
+        return CommentDatabase.getInstance(context).commentDao();
+    }
+
+    @Singleton
+    @Provides
+    LocalCommentRepository provideLocalCommentRepository(CommentDao commentDao) {
+        return new LocalCommentDataStore(commentDao);
+    }
+
+    @Singleton
+    @Provides
+    RemoteCommentRepository provideRemoteCommentRepository(JobManager jobManager) {
+        return new RemoteCommentDataStore(jobManager);
     }
 }
