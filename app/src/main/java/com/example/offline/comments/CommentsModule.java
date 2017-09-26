@@ -15,9 +15,8 @@ public class CommentsModule {
     @Provides
     CommentsViewModelFactory provideCommentsViewModelFactory(GetCommentsUseCase getCommentsUseCase,
                                                              AddCommentUseCase addCommentUseCase,
-                                                             SyncCommentUseCase syncCommentUseCase,
                                                              SchedulersFacade schedulersFacade) {
-        return new CommentsViewModelFactory(getCommentsUseCase, addCommentUseCase, syncCommentUseCase, schedulersFacade);
+        return new CommentsViewModelFactory(getCommentsUseCase, addCommentUseCase, schedulersFacade);
     }
 
     @Provides
@@ -28,8 +27,8 @@ public class CommentsModule {
     }
 
     @Provides
-    AddCommentUseCase provideAddCommentUseCase(LocalCommentDataStore localCommentDataStore) {
-        return new AddCommentUseCase(localCommentDataStore);
+    AddCommentUseCase provideAddCommentUseCase(LocalCommentDataStore localCommentDataStore, SyncCommentUseCase syncCommentUseCase) {
+        return new AddCommentUseCase(localCommentDataStore, syncCommentUseCase);
     }
 
     @Provides

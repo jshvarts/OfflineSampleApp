@@ -16,18 +16,15 @@ class CommentsViewModel extends ViewModel {
 
     private final GetCommentsUseCase getCommentsUseCase;
     private final AddCommentUseCase addCommentUseCase;
-    private final SyncCommentUseCase syncCommentUseCase;
     private final SchedulersFacade schedulersFacade;
     private final CompositeDisposable disposables = new CompositeDisposable();
     private MutableLiveData<List<Comment>> commentsLiveData = new MutableLiveData<>();
 
     CommentsViewModel(GetCommentsUseCase getCommentsUseCase,
                       AddCommentUseCase addCommentUseCase,
-                      SyncCommentUseCase syncCommentUseCase,
                       SchedulersFacade schedulersFacade) {
         this.getCommentsUseCase = getCommentsUseCase;
         this.addCommentUseCase = addCommentUseCase;
-        this.syncCommentUseCase = syncCommentUseCase;
         this.schedulersFacade = schedulersFacade;
 
         loadComments();
@@ -50,7 +47,7 @@ class CommentsViewModel extends ViewModel {
         disposables.add(addCommentUseCase.addComment(commentText)
                 .subscribeOn(schedulersFacade.io())
                 .observeOn(schedulersFacade.ui())
-                .subscribe(comment -> syncComment(comment),
+                .subscribe(() -> Timber.d("add comment success"),
                         t -> Timber.e(t, "add comment error")));
     }
 
@@ -59,13 +56,5 @@ class CommentsViewModel extends ViewModel {
      */
     LiveData<List<Comment>> getComments() {
         return commentsLiveData;
-    }
-
-    private void syncComment(Comment comment) {
-        disposables.add(syncCommentUseCase.syncComment(comment)
-                .subscribeOn(schedulersFacade.io())
-                .observeOn(schedulersFacade.ui())
-                .subscribe(() -> Timber.d("sync comment request sent"),
-                        t -> Timber.e(t, "sync comment request error")));
     }
 }

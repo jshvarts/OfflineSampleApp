@@ -1,19 +1,21 @@
 package com.example.offline.comments;
 
-import com.example.offline.model.Comment;
 import com.example.offline.model.LocalCommentDataStore;
 import com.example.offline.model.ModelConstants;
 
-import io.reactivex.Single;
+import io.reactivex.Completable;
 
 class AddCommentUseCase {
     private final LocalCommentDataStore localCommentDataStore;
+    private final SyncCommentUseCase syncCommentUseCase;
 
-    AddCommentUseCase(LocalCommentDataStore localCommentDataStore) {
+    AddCommentUseCase(LocalCommentDataStore localCommentDataStore, SyncCommentUseCase syncCommentUseCase) {
         this.localCommentDataStore = localCommentDataStore;
+        this.syncCommentUseCase = syncCommentUseCase;
     }
 
-    Single<Comment> addComment(String commentText) {
-        return localCommentDataStore.add(ModelConstants.DUMMY_PHOTO_ID, commentText);
+    Completable addComment(String commentText) {
+        return localCommentDataStore.add(ModelConstants.DUMMY_PHOTO_ID, commentText)
+                .flatMapCompletable(comment -> syncCommentUseCase.syncComment(comment));
     }
 }
