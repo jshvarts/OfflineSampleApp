@@ -6,14 +6,12 @@ import android.support.annotation.Nullable;
 import com.birbit.android.jobqueue.Job;
 import com.birbit.android.jobqueue.Params;
 import com.birbit.android.jobqueue.RetryConstraint;
-import com.example.offline.events.DeleteCommentRequestEvent;
-import com.example.offline.events.UpdateCommentRequestEvent;
+import com.example.offline.events.SyncCommentRxBus;
+import com.example.offline.events.SyncResponseEventType;
 import com.example.offline.model.Comment;
 import com.example.offline.model.CommentUtils;
 import com.example.offline.networking.RemoteCommentService;
 import com.example.offline.networking.RemoteException;
-
-import org.greenrobot.eventbus.EventBus;
 
 import timber.log.Timber;
 
@@ -42,16 +40,16 @@ public class SyncCommentJob extends Job {
         // if any exception is thrown, it will be handled by shouldReRunOnThrowable()
         RemoteCommentService.getInstance().addComment(comment);
 
-        // remote call was successful--update the Comment locally to notify that sync is no longer pending
+        // remote call was successful--the Comment will be updated locally to reflect that sync is no longer pending
         Comment updatedComment = CommentUtils.clone(comment, false);
-        EventBus.getDefault().post(new UpdateCommentRequestEvent(updatedComment));
+        SyncCommentRxBus.getInstance().post(SyncResponseEventType.SUCCESS, updatedComment);
     }
 
     @Override
     protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
         Timber.d("canceling job. reason: %d, throwable: %s", cancelReason, throwable);
-        // sync to remote failed--remove comment from local db
-        EventBus.getDefault().post(new DeleteCommentRequestEvent(comment));
+        // sync to remote failed
+        SyncCommentRxBus.getInstance().post(SyncResponseEventType.FAILED, comment);
     }
 
     @Override

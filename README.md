@@ -33,7 +33,7 @@ This background job is designed to be persistent--it is guaranteed to execute ev
     * [Dagger Android 2.11](https://github.com/google/dagger/releases/tag/dagger-2.11) to manage App and Activity-scoped dependencies.
 * Communication between app layers
     * [RxJava2](https://github.com/ReactiveX/RxJava) and [RxAndroid](https://github.com/ReactiveX/RxAndroid) for interacting between `ViewModel` and local database. 
-    * [EventBus](http://greenrobot.org/eventbus/) for posting requests from the background job to lifecycle-aware Android components such as `Activity`. 
+    * [RxRelay](https://github.com/JakeWharton/RxRelay) for publishing requests from the background job so that lifecycle observer components can update local database. 
 * Other
     * [ButterKnife](http://jakewharton.github.io/butterknife/) to simplify View and Listener bindings.
 

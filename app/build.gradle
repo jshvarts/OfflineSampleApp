@@ -10,9 +10,9 @@ project.ext {
     lifecycleVersion = "1.0.0-alpha4"
     priorityJobQueueVersion = "2.0.1"
     gcmNetworkManagerVersion = "9.4.0"
-    eventBusVersion = "3.0.0"
     retrofitVersion = "2.1.0"
     okHttpVersion = "3.4.1"
+    rxRelayVersion = "2.0.0"
 }
 
 android {
@@ -78,9 +78,6 @@ dependencies {
     // RecyclerView
     compile "com.android.support:recyclerview-v7:$project.supportLibraryVersion"
 
-    // EventBus from Green Robot
-    compile "org.greenrobot:eventbus:$project.eventBusVersion"
-
     // Retrofit
     compile "com.squareup.retrofit2:retrofit:$project.retrofitVersion"
 
@@ -100,4 +97,7 @@ dependencies {
     compile "android.arch.lifecycle:runtime:$project.lifecycleVersion"
     compile "android.arch.lifecycle:extensions:$project.lifecycleVersion"
     annotationProcessor "android.arch.lifecycle:compiler:$project.lifecycleVersion"
+
+    // RxRelay
+    compile "com.jakewharton.rxrelay2:rxrelay:$project.rxRelayVersion"
 }
