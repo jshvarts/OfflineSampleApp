@@ -13,6 +13,8 @@ With offline apps
 
 ## App Overview
 
+![Comments Screen](images/comments.png?raw=true)
+
 The Android app is a working sample that showcases offline commenting capability. User's comments are stored in local Room database first. A background job (implemented using Android Priority JobQueue library) is then spawned to synchronize local data with a remote database whenever Internet connection is available. 
 
 This background job is designed to be persistent--it is guaranteed to execute even after app or device restarts while waiting for the network connection.
@@ -36,6 +38,7 @@ This background job is designed to be persistent--it is guaranteed to execute ev
     * [RxRelay](https://github.com/JakeWharton/RxRelay) for publishing requests from the background job so that lifecycle observer components can update local database. 
 * Other
     * [ButterKnife](http://jakewharton.github.io/butterknife/) to simplify View and Listener bindings.
+    * The project employes Travis CI for automated continuous integration.
 
 ## License
 
