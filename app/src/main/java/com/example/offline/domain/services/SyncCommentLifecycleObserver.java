@@ -6,9 +6,6 @@ import android.arch.lifecycle.OnLifecycleEvent;
 
 import com.example.offline.domain.DeleteCommentUseCase;
 import com.example.offline.domain.UpdateCommentUseCase;
-import com.example.offline.domain.services.SyncCommentResponse;
-import com.example.offline.domain.services.SyncCommentRxBus;
-import com.example.offline.domain.services.SyncResponseEventType;
 import com.example.offline.model.Comment;
 import com.example.offline.rx.SchedulersFacade;
 
@@ -36,7 +33,7 @@ public class SyncCommentLifecycleObserver implements LifecycleObserver {
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     public void onResume() {
         Timber.d("onResume lifecycle event.");
-        disposables.add(SyncCommentRxBus.getInstance().observe()
+        disposables.add(SyncCommentRxBus.getInstance().toObservable()
                 .subscribe(syncResponse -> handleSyncResponse(syncResponse)));
     }
 

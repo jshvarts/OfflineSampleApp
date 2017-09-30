@@ -3,6 +3,8 @@ package com.example.offline.domain.services;
 import com.example.offline.model.Comment;
 import com.jakewharton.rxrelay2.PublishRelay;
 
+import io.reactivex.Observable;
+
 public class SyncCommentRxBus {
 
     private static SyncCommentRxBus instance;
@@ -23,7 +25,7 @@ public class SyncCommentRxBus {
         relay.accept(new SyncCommentResponse(eventType, comment));
     }
 
-    public PublishRelay<SyncCommentResponse> observe() {
+    public Observable<SyncCommentResponse> toObservable() {
         return relay;
     }
 }
