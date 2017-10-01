@@ -38,7 +38,8 @@ This background job is designed to be persistent--it is guaranteed to execute ev
     * [RxRelay](https://github.com/JakeWharton/RxRelay) for publishing requests from the background job so that lifecycle observer components can update local database. 
 * Other
     * [ButterKnife](http://jakewharton.github.io/butterknife/) to simplify View and Listener bindings.
-    * The project employs [Travis CI](https://travis-ci.org/) for automating continuous integration.
+    * [Travis CI](https://travis-ci.org/) is used for automating continuous integration.
+    * Quality checks used: checkstyle, pmd, findbugs.
 
 ## License
 

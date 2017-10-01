@@ -22,7 +22,7 @@
             android:id="@+id/photo_caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="The Breakers in Newport, Rhode Island"
+            android:text="@string/comments_sample_photo_caption"
             android:layout_below="@+id/photo"
             android:layout_centerHorizontal="true" />
 
@@ -39,13 +39,13 @@
                 android:id="@+id/add_comment_edittext"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:hint="comment" />
+                android:hint="@string/comments_add_comment_hint" />
 
             <Button
                 android:id="@+id/add_comment_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="add" />
+                android:text="@string/comments_add_comment_button_text" />
 
         </LinearLayout>
 

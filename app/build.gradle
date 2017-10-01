@@ -1,15 +1,16 @@
 apply plugin: 'com.android.application'
+apply from: "$project.rootDir/config/quality.gradle"
 
 project.ext {
     supportLibraryVersion = "25.4.0"
     daggerVersion = "2.11"
-    butterKnifeVersion = "8.5.1"
+    butterKnifeVersion = "8.7.0"
     rxJavaVersion = "2.1.0"
     rxAndroidVersion = "2.0.1"
     timberVersion = "4.5.1"
     lifecycleVersion = "1.0.0-alpha4"
     priorityJobQueueVersion = "2.0.1"
-    gcmNetworkManagerVersion = "9.4.0"
+    gcmNetworkManagerVersion = "11.4.0"
     retrofitVersion = "2.1.0"
     okHttpVersion = "3.4.1"
     rxRelayVersion = "2.0.0"
@@ -17,7 +18,7 @@ project.ext {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "com.example.offline"
         minSdkVersion 16
@@ -41,6 +42,10 @@ android {
 
     buildTypes.each {
         it.buildConfigField 'String', 'API_BASE_URL', "\"http://jsonplaceholder.typicode.com\""
+    }
+
+    lintOptions {
+        abortOnError false
     }
 }
 
@@ -101,3 +106,4 @@ dependencies {
     // RxRelay
     compile "com.jakewharton.rxrelay2:rxrelay:$project.rxRelayVersion"
 }
+
