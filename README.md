@@ -39,7 +39,7 @@ This background job is designed to be persistent--it is guaranteed to execute ev
 * Other
     * [ButterKnife](http://jakewharton.github.io/butterknife/) to simplify View and Listener bindings.
     * [Travis CI](https://travis-ci.org/) is used for automating continuous integration.
-    * Quality checks used: checkstyle, pmd, findbugs.
+    * The following quality checks are configured: checkstyle, pmd, findbugs, lint. You can perform all of them at once by executing `./gradlew check`
 
 ## License
 
