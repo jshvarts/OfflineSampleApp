@@ -43,7 +43,7 @@ This background job is designed to be persistent--it is guaranteed to execute ev
 
 ## Branches
 * **master** - comment sync response is observed and local database is updated by `LifecycleObserver`. For this to work, the app has to be in foreground.
-* **sync-after-boot** - comment sync response is observed and local database is updated by the background thread whenever connection is available. For this to work, the app does not need to be in foreground.
+* **sync-in-background** - comment sync response is observed and local database is updated by the background thread whenever connection is available. For this to work, the app does not need to be in foreground.
 
 ## License
 
