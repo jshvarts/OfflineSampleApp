@@ -7,9 +7,10 @@ import android.arch.lifecycle.OnLifecycleEvent;
 import com.example.offline.domain.DeleteCommentUseCase;
 import com.example.offline.domain.UpdateCommentUseCase;
 import com.example.offline.model.Comment;
-import com.example.offline.rx.SchedulersFacade;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -18,16 +19,12 @@ import timber.log.Timber;
 public class SyncCommentLifecycleObserver implements LifecycleObserver {
     private final UpdateCommentUseCase updateCommentUseCase;
     private final DeleteCommentUseCase deleteCommentUseCase;
-    private final SchedulersFacade schedulersFacade;
-
     private final CompositeDisposable disposables = new CompositeDisposable();
 
     public SyncCommentLifecycleObserver(UpdateCommentUseCase updateCommentUseCase,
-                                        DeleteCommentUseCase deleteCommentUseCase,
-                                        SchedulersFacade schedulersFacade) {
+                                        DeleteCommentUseCase deleteCommentUseCase) {
         this.updateCommentUseCase = updateCommentUseCase;
         this.deleteCommentUseCase = deleteCommentUseCase;
-        this.schedulersFacade = schedulersFacade;
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
@@ -54,8 +51,8 @@ public class SyncCommentLifecycleObserver implements LifecycleObserver {
     private void onSyncCommentSuccess(Comment comment) {
         Timber.d("received sync comment success event for comment %s", comment);
         disposables.add(updateCommentUseCase.updateComment(comment)
-                .subscribeOn(schedulersFacade.io())
-                .observeOn(schedulersFacade.ui())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> Timber.d("update comment success"),
                         t -> Timber.e(t, "update comment error")));
     }
@@ -63,8 +60,8 @@ public class SyncCommentLifecycleObserver implements LifecycleObserver {
     private void onSyncCommentFailed(Comment comment) {
         Timber.d("received sync comment failed event for comment %s", comment);
         disposables.add(deleteCommentUseCase.deleteComment(comment)
-                .subscribeOn(schedulersFacade.io())
-                .observeOn(schedulersFacade.ui())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> Timber.d("delete comment success"),
                         t -> Timber.e(t, "delete comment error")));
     }
