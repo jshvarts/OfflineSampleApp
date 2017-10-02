@@ -13,8 +13,8 @@ def qualityConfigDir = "$project.rootDir/config/quality"
 def reportsDir = "$project.buildDir/reports"
 
 task checkstyle(type: Checkstyle) {
-    group = "Static Analysis"
-    description = "Checks style of source code"
+    group = "verification"
+    description = "Checks style of source code for all variants."
     configFile rootProject.file('config/quality/checkstyle/checkstyle.xml')
     configProperties.checkstyleSuppressionsPath = file("${qualityConfigDir}/checkstyle/suppressions.xml").absolutePath
     source 'src'
@@ -24,8 +24,8 @@ task checkstyle(type: Checkstyle) {
 }
 
 task findbugs(type: FindBugs) {
-    group = "Static Analysis"
-    description = "Finds bugs in bytecode."
+    group = "verification"
+    description = "Finds bugs in bytecode for all variants."
     ignoreFailures = false
     effort = "max"
     reportLevel = "high"
@@ -48,11 +48,10 @@ task findbugs(type: FindBugs) {
 }
 
 task pmd(type: Pmd) {
-    group = "Static Analysis"
-    description = "Performs quality checks in source code."
+    group = "verification"
+    description = "Performs quality checks in source code for all variants."
     ignoreFailures = false
     ruleSetFiles = files("${qualityConfigDir}/pmd/pmd-ruleset.xml")
-    ruleSets = []
 
     source 'src'
     include '**/*.java'
