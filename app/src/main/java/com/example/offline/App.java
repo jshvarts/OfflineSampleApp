@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 
 import com.example.offline.di.DaggerAppComponent;
-import com.example.offline.domain.services.jobs.JobManagerFactory;
+import com.example.offline.domain.services.jobs.SyncCommentJobManagerInitializer;
 
 import javax.inject.Inject;
 
@@ -16,6 +16,9 @@ import timber.log.Timber;
 public class App extends Application implements HasActivityInjector {
     @Inject
     DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
+
+    @Inject
+    SyncCommentJobManagerInitializer syncCommentJobManagerInitializer;
 
     @Override
     public void onCreate() {
@@ -31,7 +34,7 @@ public class App extends Application implements HasActivityInjector {
                 .build()
                 .inject(this);
 
-        JobManagerFactory.getJobManager(this);
+        syncCommentJobManagerInitializer.initialize(this);
     }
 
     @Override

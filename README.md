@@ -41,6 +41,10 @@ This background job is designed to be persistent--it is guaranteed to execute ev
     * [Travis CI](https://travis-ci.org/) is used for automating continuous integration.
     * The following quality checks are configured: checkstyle, pmd, findbugs, lint. You can perform all of them at once by executing `./gradlew check`
 
+## Branches
+* **master** - comment sync response is observed and local database is updated by `LifecycleObserver`. For this to work, the app has to be in foreground.
+* **sync-after-boot** - comment sync response is observed and local database is updated in the background whenever connection is available. For this to work, the app does not need to be in foreground.
+
 ## License
 
     Copyright 2017 James Shvarts

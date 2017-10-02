@@ -63,14 +63,16 @@ public class JobManagerFactory {
                 .loadFactor(3)//3 jobs per consumer
                 .consumerKeepAlive(120)//wait 2 minutes
                 .customLogger(customLogger);
+
+        // we are setting batch param below to false so that sync results are observed and acted upon in the background.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder.scheduler(FrameworkJobSchedulerService.createSchedulerFor(context,
-                    SchedulerJobService.class), true);
+                    SchedulerJobService.class), false);
         } else {
             int enableGcm = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
             if (enableGcm == ConnectionResult.SUCCESS) {
                 builder.scheduler(GcmJobSchedulerService.createSchedulerFor(context,
-                        GcmJobSchedulerService.class), true);
+                        GcmJobSchedulerService.class), false);
             }
         }
         return new JobManager(builder.build());

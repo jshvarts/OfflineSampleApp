@@ -12,7 +12,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.example.offline.R;
-import com.example.offline.domain.services.SyncCommentLifecycleObserver;
 import com.example.offline.presentation.CommentsViewModel;
 import com.example.offline.presentation.CommentsViewModelFactory;
 
@@ -29,9 +28,6 @@ public class CommentsActivity extends AppCompatActivity implements LifecycleRegi
 
     @Inject
     CommentsViewModelFactory viewModelFactory;
-
-    @Inject
-    SyncCommentLifecycleObserver syncCommentLifecycleObserver;
 
     @BindView(R.id.add_comment_edittext)
     EditText addCommentEditText;
@@ -52,8 +48,6 @@ public class CommentsActivity extends AppCompatActivity implements LifecycleRegi
         setContentView(R.layout.comments_activity);
 
         ButterKnife.bind(this);
-
-        getLifecycle().addObserver(syncCommentLifecycleObserver);
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CommentsViewModel.class);
 
