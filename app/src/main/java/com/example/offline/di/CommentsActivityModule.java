@@ -6,7 +6,6 @@ import com.example.offline.domain.RemoteCommentRepository;
 import com.example.offline.domain.AddCommentUseCase;
 import com.example.offline.domain.SyncCommentUseCase;
 import com.example.offline.presentation.CommentsViewModelFactory;
-import com.example.offline.rx.SchedulersFacade;
 
 import dagger.Module;
 import dagger.Provides;
@@ -18,9 +17,8 @@ import dagger.Provides;
 public class CommentsActivityModule {
     @Provides
     CommentsViewModelFactory provideCommentsViewModelFactory(GetCommentsUseCase getCommentsUseCase,
-                                                             AddCommentUseCase addCommentUseCase,
-                                                             SchedulersFacade schedulersFacade) {
-        return new CommentsViewModelFactory(getCommentsUseCase, addCommentUseCase, schedulersFacade);
+                                                             AddCommentUseCase addCommentUseCase) {
+        return new CommentsViewModelFactory(getCommentsUseCase, addCommentUseCase);
     }
 
     @Provides

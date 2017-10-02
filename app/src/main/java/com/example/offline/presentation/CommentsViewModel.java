@@ -7,27 +7,24 @@ import android.arch.lifecycle.ViewModel;
 import com.example.offline.domain.AddCommentUseCase;
 import com.example.offline.domain.GetCommentsUseCase;
 import com.example.offline.model.Comment;
-import com.example.offline.rx.SchedulersFacade;
 
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class CommentsViewModel extends ViewModel {
 
     private final GetCommentsUseCase getCommentsUseCase;
     private final AddCommentUseCase addCommentUseCase;
-    private final SchedulersFacade schedulersFacade;
     private final CompositeDisposable disposables = new CompositeDisposable();
     private MutableLiveData<List<Comment>> commentsLiveData = new MutableLiveData<>();
 
-    public CommentsViewModel(GetCommentsUseCase getCommentsUseCase,
-                      AddCommentUseCase addCommentUseCase,
-                      SchedulersFacade schedulersFacade) {
+    public CommentsViewModel(GetCommentsUseCase getCommentsUseCase, AddCommentUseCase addCommentUseCase) {
         this.getCommentsUseCase = getCommentsUseCase;
         this.addCommentUseCase = addCommentUseCase;
-        this.schedulersFacade = schedulersFacade;
 
         loadComments();
     }
@@ -39,16 +36,16 @@ public class CommentsViewModel extends ViewModel {
 
     public void loadComments() {
         disposables.add(getCommentsUseCase.getComments()
-                .subscribeOn(schedulersFacade.io())
-                .observeOn(schedulersFacade.ui())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(commentList -> commentsLiveData.setValue(commentList),
                         t -> Timber.e(t, "get comments error")));
     }
 
     public void addComment(String commentText) {
         disposables.add(addCommentUseCase.addComment(commentText)
-                .subscribeOn(schedulersFacade.io())
-                .observeOn(schedulersFacade.ui())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> Timber.d("add comment success"),
                         t -> Timber.e(t, "add comment error")));
     }
