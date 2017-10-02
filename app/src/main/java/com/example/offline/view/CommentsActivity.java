@@ -46,6 +46,11 @@ public class CommentsActivity extends AppCompatActivity implements LifecycleRegi
     private LifecycleRegistry registry = new LifecycleRegistry(this);
 
     @Override
+    public LifecycleRegistry getLifecycle() {
+        return registry;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
@@ -53,13 +58,13 @@ public class CommentsActivity extends AppCompatActivity implements LifecycleRegi
 
         ButterKnife.bind(this);
 
+        initRecyclerView();
+
         getLifecycle().addObserver(syncCommentLifecycleObserver);
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CommentsViewModel.class);
 
-        subscribeToComments();
-
-        initRecyclerView();
+        viewModel.getComments().observe(this, recyclerViewAdapter::updateCommentList);
     }
 
     @OnClick(R.id.add_comment_button)
@@ -71,10 +76,6 @@ public class CommentsActivity extends AppCompatActivity implements LifecycleRegi
         viewModel.addComment(addCommentEditText.getText().toString());
 
         clearEditText();
-    }
-
-    private void subscribeToComments() {
-        viewModel.getComments().observe(this, commentList -> recyclerViewAdapter.updateCommentList(commentList));
     }
 
     private void hideKeyboard() {
@@ -96,10 +97,5 @@ public class CommentsActivity extends AppCompatActivity implements LifecycleRegi
 
         recyclerViewAdapter = new CommentListAdapter(new ArrayList<>());
         recyclerView.setAdapter(recyclerViewAdapter);
-    }
-
-    @Override
-    public LifecycleRegistry getLifecycle() {
-        return registry;
     }
 }
