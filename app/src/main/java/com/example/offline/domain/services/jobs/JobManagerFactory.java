@@ -17,6 +17,10 @@ public class JobManagerFactory {
 
     private static JobManager jobManager;
 
+    public static synchronized JobManager getJobManager() {
+        return jobManager;
+    }
+
     public static synchronized JobManager getJobManager(Context context) {
         if (jobManager == null) {
             jobManager = configureJobManager(context);

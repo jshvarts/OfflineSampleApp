@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 
 import com.example.offline.di.DaggerAppComponent;
+import com.example.offline.domain.services.jobs.JobManagerFactory;
 
 import javax.inject.Inject;
 
@@ -29,6 +30,8 @@ public class App extends Application implements HasActivityInjector {
                 .application(this)
                 .build()
                 .inject(this);
+
+        JobManagerFactory.getJobManager(this);
     }
 
     @Override

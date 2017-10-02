@@ -2,7 +2,6 @@ package com.example.offline.di;
 
 import android.content.Context;
 
-import com.birbit.android.jobqueue.JobManager;
 import com.example.offline.App;
 import com.example.offline.data.CommentDao;
 import com.example.offline.data.CommentDatabase;
@@ -11,7 +10,6 @@ import com.example.offline.data.RemoteCommentDataStore;
 import com.example.offline.domain.LocalCommentRepository;
 import com.example.offline.domain.RemoteCommentRepository;
 import com.example.offline.domain.services.jobs.GcmJobService;
-import com.example.offline.domain.services.jobs.JobManagerFactory;
 import com.example.offline.domain.services.jobs.SchedulerJobService;
 
 import javax.inject.Singleton;
@@ -28,12 +26,6 @@ public class AppModule {
     @Provides
     Context provideContext(App application) {
         return application.getApplicationContext();
-    }
-
-    @Singleton
-    @Provides
-    JobManager provideJobManager(Context context) {
-        return JobManagerFactory.getJobManager(context);
     }
 
     @Singleton
@@ -62,7 +54,7 @@ public class AppModule {
 
     @Singleton
     @Provides
-    RemoteCommentRepository provideRemoteCommentRepository(JobManager jobManager) {
-        return new RemoteCommentDataStore(jobManager);
+    RemoteCommentRepository provideRemoteCommentRepository() {
+        return new RemoteCommentDataStore();
     }
 }
