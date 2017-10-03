@@ -64,7 +64,7 @@ public class CommentsActivity extends AppCompatActivity implements LifecycleRegi
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CommentsViewModel.class);
 
-        viewModel.getComments().observe(this, recyclerViewAdapter::updateCommentList);
+        viewModel.comments().observe(this, recyclerViewAdapter::updateCommentList);
     }
 
     @OnClick(R.id.add_comment_button)
