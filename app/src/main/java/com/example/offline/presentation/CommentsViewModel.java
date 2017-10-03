@@ -33,15 +33,9 @@ public class CommentsViewModel extends ViewModel {
     protected void onCleared() {
         disposables.clear();
     }
-
-    public void loadComments() {
-        disposables.add(getCommentsUseCase.getComments()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(commentList -> commentsLiveData.setValue(commentList),
-                        t -> Timber.e(t, "get comments error")));
-    }
-
+    /**
+     * Adds new comment
+     */
     public void addComment(String commentText) {
         disposables.add(addCommentUseCase.addComment(commentText)
                 .subscribeOn(Schedulers.io())
@@ -51,9 +45,17 @@ public class CommentsViewModel extends ViewModel {
     }
 
     /**
-     * Exposes the LiveData Comments query so the UI can observe it
+     * Exposes the latest comments so the UI can observe it
      */
-    public LiveData<List<Comment>> getComments() {
+    public LiveData<List<Comment>> comments() {
         return commentsLiveData;
+    }
+
+    void loadComments() {
+        disposables.add(getCommentsUseCase.getComments()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(commentList -> commentsLiveData.setValue(commentList),
+                        t -> Timber.e(t, "get comments error")));
     }
 }
