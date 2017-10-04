@@ -24,7 +24,7 @@ public class SyncCommentResponseObserver {
 
     void observeSyncResponse() {
         SyncCommentRxBus.getInstance().toObservable()
-                .subscribe(syncResponse -> handleSyncResponse(syncResponse));
+                .subscribe(this::handleSyncResponse);
     }
 
     private void handleSyncResponse(SyncCommentResponse response) {

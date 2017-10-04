@@ -1,7 +1,6 @@
 package com.example.offline.domain;
 
 import com.example.offline.model.ModelConstants;
-
 import io.reactivex.Completable;
 
 public class AddCommentUseCase {
@@ -15,6 +14,6 @@ public class AddCommentUseCase {
 
     public Completable addComment(String commentText) {
         return localCommentRepository.add(ModelConstants.DUMMY_PHOTO_ID, commentText)
-                .flatMapCompletable(comment -> syncCommentUseCase.syncComment(comment));
+                .flatMapCompletable(syncCommentUseCase::syncComment);
     }
 }
