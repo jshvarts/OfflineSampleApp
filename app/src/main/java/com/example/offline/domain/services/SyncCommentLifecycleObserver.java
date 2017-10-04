@@ -31,7 +31,7 @@ public class SyncCommentLifecycleObserver implements LifecycleObserver {
     public void onResume() {
         Timber.d("onResume lifecycle event.");
         disposables.add(SyncCommentRxBus.getInstance().toObservable()
-                .subscribe(syncResponse -> handleSyncResponse(syncResponse)));
+                .subscribe(this::handleSyncResponse));
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)

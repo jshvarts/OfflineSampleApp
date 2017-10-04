@@ -57,7 +57,7 @@ public class CommentsViewModel extends ViewModel {
         disposables.add(getCommentsUseCase.getComments()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(commentList -> commentsLiveData.setValue(commentList),
+                .subscribe(commentsLiveData::setValue,
                         t -> Timber.e(t, "get comments error")));
     }
 }
