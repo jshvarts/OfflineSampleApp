@@ -64,7 +64,7 @@ public class AppModule {
 
     @Singleton
     @Provides
-    SyncCommentResponseObserver provideLocalCommentRepositoryAfterSyncService(UpdateCommentUseCase updateCommentUseCase, DeleteCommentUseCase deleteCommentUseCase) {
+    SyncCommentResponseObserver provideSyncCommentResponseObserver(UpdateCommentUseCase updateCommentUseCase, DeleteCommentUseCase deleteCommentUseCase) {
         return new SyncCommentResponseObserver(updateCommentUseCase, deleteCommentUseCase);
     }
 

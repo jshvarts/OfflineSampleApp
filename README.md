@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/jshvarts/OfflineSampleApp.svg?branch=master)](https://travis-ci.org/jshvarts/OfflineSampleApp)
 
+Medium post covering this app: [Building Offline-First App using MVVM, RxJava, Room and Priority Job Queue](https://proandroiddev.com/offline-apps-its-easier-than-you-think-9ff97701a73f)
+
 ## What is an Offline App?
 
 Offline App (or Offline-First App) enables user to seamlessly interact with it by using local device storage and then synchronizing the data with some remote storage (cloud database, etc) later via a background process.
