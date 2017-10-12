@@ -18,7 +18,6 @@ project.ext {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.example.offline"
         minSdkVersion 16
@@ -50,48 +49,47 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile "com.android.support:appcompat-v7:$project.supportLibraryVersion"
+    implementation "com.android.support:appcompat-v7:$project.supportLibraryVersion"
 
     // Dagger core
     annotationProcessor "com.google.dagger:dagger-compiler:$project.daggerVersion"
-    compile "com.google.dagger:dagger:$project.daggerVersion"
+    implementation "com.google.dagger:dagger:$project.daggerVersion"
 
     // Dagger Android
     annotationProcessor "com.google.dagger:dagger-android-processor:$project.daggerVersion"
-    compile "com.google.dagger:dagger-android-support:$project.daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$project.daggerVersion"
     // if you are not using support library, include this instead
-    compile "com.google.dagger:dagger-android:$project.daggerVersion"
+    implementation "com.google.dagger:dagger-android:$project.daggerVersion"
 
     // ButterKnife
-    compile "com.jakewharton:butterknife:$project.butterKnifeVersion"
+    implementation "com.jakewharton:butterknife:$project.butterKnifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$project.butterKnifeVersion"
 
     // ReactiveX
-    compile "io.reactivex.rxjava2:rxjava:$project.rxJavaVersion"
-    compile "io.reactivex.rxjava2:rxandroid:$project.rxAndroidVersion"
+    implementation "io.reactivex.rxjava2:rxjava:$project.rxJavaVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$project.rxAndroidVersion"
 
     // Timber
-    compile "com.jakewharton.timber:timber:$project.timberVersion"
+    implementation "com.jakewharton.timber:timber:$project.timberVersion"
 
     // Priority Job Queue
-    compile "com.birbit:android-priority-jobqueue:$project.priorityJobQueueVersion"
+    implementation "com.birbit:android-priority-jobqueue:$project.priorityJobQueueVersion"
 
     //GCM Network Manager
-    compile 'com.google.android.gms:play-services-gcm:9.4.0'
+    implementation 'com.google.android.gms:play-services-gcm:9.4.0'
 
     // RecyclerView
-    compile "com.android.support:recyclerview-v7:$project.supportLibraryVersion"
+    implementation "com.android.support:recyclerview-v7:$project.supportLibraryVersion"
 
     // Retrofit
-    compile "com.squareup.retrofit2:retrofit:$project.retrofitVersion"
+    implementation "com.squareup.retrofit2:retrofit:$project.retrofitVersion"
 
     // GSON Converter
-    compile "com.squareup.retrofit2:converter-gson:$project.retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$project.retrofitVersion"
 
     // OkHttp Logging Interceptor
-    compile "com.squareup.okhttp3:okhttp:$project.okHttpVersion"
-    compile "com.squareup.okhttp3:logging-interceptor:$project.okHttpVersion"
+    implementation "com.squareup.okhttp3:okhttp:$project.okHttpVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$project.okHttpVersion"
 
     // Room Database
     implementation "android.arch.persistence.room:runtime:$rootProject.roomVersion"
@@ -99,11 +97,10 @@ dependencies {
     annotationProcessor "android.arch.persistence.room:compiler:$rootProject.roomVersion"
 
     // Lifecycle
-    compile "android.arch.lifecycle:runtime:$project.lifecycleVersion"
-    compile "android.arch.lifecycle:extensions:$project.lifecycleVersion"
+    implementation "android.arch.lifecycle:runtime:$project.lifecycleVersion"
+    implementation "android.arch.lifecycle:extensions:$project.lifecycleVersion"
     annotationProcessor "android.arch.lifecycle:compiler:$project.lifecycleVersion"
 
     // RxRelay
-    compile "com.jakewharton.rxrelay2:rxrelay:$project.rxRelayVersion"
+    implementation "com.jakewharton.rxrelay2:rxrelay:$project.rxRelayVersion"
 }
-

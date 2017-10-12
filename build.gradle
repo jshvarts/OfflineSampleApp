@@ -3,7 +3,7 @@
 buildscript {
 
     ext {
-        androidGradlePluginVersion = '3.0.0-alpha5'
+        androidGradlePluginVersion = '3.0.0-beta7'
         roomVersion = '1.0.0-alpha4'
     }
 
