@@ -18,6 +18,7 @@ project.ext {
 
 android {
     compileSdkVersion 25
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.example.offline"
         minSdkVersion 16
@@ -31,18 +32,15 @@ android {
             targetCompatibility JavaVersion.VERSION_1_8
         }
     }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     buildTypes.each {
         it.buildConfigField 'String', 'API_BASE_URL', "\"http://jsonplaceholder.typicode.com\""
     }
-
     lintOptions {
         abortOnError false
     }
@@ -58,6 +56,7 @@ dependencies {
     // Dagger Android
     annotationProcessor "com.google.dagger:dagger-android-processor:$project.daggerVersion"
     implementation "com.google.dagger:dagger-android-support:$project.daggerVersion"
+
     // if you are not using support library, include this instead
     implementation "com.google.dagger:dagger-android:$project.daggerVersion"
 
