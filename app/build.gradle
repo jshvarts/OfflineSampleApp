@@ -18,7 +18,6 @@ project.ext {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.example.offline"
         minSdkVersion 16
