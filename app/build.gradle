@@ -14,6 +14,7 @@ project.ext {
     retrofitVersion = "2.1.0"
     okHttpVersion = "3.4.1"
     rxRelayVersion = "2.0.0"
+    rxLintVersion = "1.6"
 }
 
 android {
@@ -103,4 +104,7 @@ dependencies {
 
     // RxRelay
     implementation "com.jakewharton.rxrelay2:rxrelay:$project.rxRelayVersion"
+
+    // RxLint
+    implementation "nl.littlerobots.rxlint:rxlint:$project.rxLintVersion"
 }
