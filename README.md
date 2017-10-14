@@ -41,7 +41,7 @@ This background job is designed to be persistent--it is guaranteed to execute ev
 * Other
     * [ButterKnife](http://jakewharton.github.io/butterknife/) to simplify View and Listener bindings.
     * [Travis CI](https://travis-ci.org/) is used for automating continuous integration.
-    * The following quality checks are configured: checkstyle, pmd, findbugs, lint. You can perform all of them at once by executing `./gradlew check`
+    * The following quality checks are configured: checkstyle, pmd, findbugs, lint and [RxLint](http://bitbucket.org/littlerobots/rxlint). You can perform all of them at once by executing `./gradlew check`
 
 ## Branches
 * **master** - comment sync response is observed and local database is updated by `LifecycleObserver`. For this to work, the app has to be in foreground.

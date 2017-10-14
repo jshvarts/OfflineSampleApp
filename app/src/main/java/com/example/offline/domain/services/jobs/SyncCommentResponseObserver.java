@@ -1,5 +1,6 @@
 package com.example.offline.domain.services.jobs;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.WorkerThread;
 
 import com.example.offline.domain.DeleteCommentUseCase;
@@ -22,9 +23,11 @@ public class SyncCommentResponseObserver {
         this.deleteCommentUseCase = deleteCommentUseCase;
     }
 
+    @SuppressLint("RxLeakedSubscription")
     void observeSyncResponse() {
         SyncCommentRxBus.getInstance().toObservable()
-                .subscribe(this::handleSyncResponse);
+                .subscribe(this::handleSyncResponse,
+                        t -> Timber.e(t, "error handling sync response"));
     }
 
     private void handleSyncResponse(SyncCommentResponse response) {
@@ -35,6 +38,7 @@ public class SyncCommentResponseObserver {
         }
     }
 
+    @SuppressLint("RxLeakedSubscription")
     @WorkerThread
     private void onSyncCommentSuccess(Comment comment) {
         Timber.d("received sync comment success event for comment %s", comment);
@@ -43,6 +47,7 @@ public class SyncCommentResponseObserver {
                         t -> Timber.e(t, "update comment error"));
     }
 
+    @SuppressLint("RxLeakedSubscription")
     @WorkerThread
     private void onSyncCommentFailed(Comment comment) {
         Timber.d("received sync comment failed event for comment %s", comment);
