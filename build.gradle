@@ -3,7 +3,6 @@
 buildscript {
 
     ext {
-        androidGradlePluginVersion = '3.0.0-beta7'
         roomVersion = '1.0.0-alpha4'
     }
 
@@ -12,7 +11,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:$androidGradlePluginVersion"
+        classpath 'com.android.tools.build:gradle:3.0.0-rc1'
     }
 }
 
