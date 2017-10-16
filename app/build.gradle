@@ -10,7 +10,7 @@ project.ext {
     timberVersion = "4.5.1"
     lifecycleVersion = "1.0.0-alpha4"
     priorityJobQueueVersion = "2.0.1"
-    gcmNetworkManagerVersion = "11.4.0"
+    playServicesVersion = "11.4.2"
     retrofitVersion = "2.1.0"
     okHttpVersion = "3.4.1"
     rxRelayVersion = "2.0.0"
@@ -77,7 +77,7 @@ dependencies {
     implementation "com.birbit:android-priority-jobqueue:$project.priorityJobQueueVersion"
 
     //GCM Network Manager
-    implementation 'com.google.android.gms:play-services-gcm:9.4.0'
+    implementation "com.google.android.gms:play-services-gcm:$project.playServicesVersion"
 
     // RecyclerView
     implementation "com.android.support:recyclerview-v7:$project.supportLibraryVersion"
