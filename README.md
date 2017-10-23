@@ -47,6 +47,9 @@ This background job is designed to be persistent--it is guaranteed to execute ev
 * **master** - comment sync response is observed and local database is updated by `LifecycleObserver`. For this to work, the app has to be in foreground.
 * **sync-in-background** - comment sync response is observed and local database is updated by the background thread whenever connection is available. For this to work, the app does not need to be in foreground.
 
+### How do I use this project?
+This is a example project aimed to help bootstrap new Android Offline Applications. Feel free to fork this application or use [AndroidStarters](http://androidstarters.com/) to create new app using this boilerplate.
+
 ## License
 
     Copyright 2017 James Shvarts
