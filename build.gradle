@@ -1,9 +1,4 @@
 buildscript {
-
-    ext {
-        roomVersion = '1.0.0-alpha4'
-    }
-
     repositories {
         google()
         jcenter()

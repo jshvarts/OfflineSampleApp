@@ -3,12 +3,12 @@ apply from: "$project.rootDir/config/quality.gradle"
 
 project.ext {
     supportLibraryVersion = "26.1.0"
+    androidArchVersion = "1.0.0-rc1"
     daggerVersion = "2.11"
     butterKnifeVersion = "8.7.0"
     rxJavaVersion = "2.1.0"
     rxAndroidVersion = "2.0.1"
     timberVersion = "4.5.1"
-    lifecycleVersion = "1.0.0-alpha4"
     priorityJobQueueVersion = "2.0.1"
     playServicesVersion = "11.4.2"
     retrofitVersion = "2.1.0"
@@ -93,14 +93,14 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$project.okHttpVersion"
 
     // Room Database
-    implementation "android.arch.persistence.room:runtime:$rootProject.roomVersion"
-    implementation "android.arch.persistence.room:rxjava2:$rootProject.roomVersion"
-    annotationProcessor "android.arch.persistence.room:compiler:$rootProject.roomVersion"
+    implementation "android.arch.persistence.room:runtime:$project.androidArchVersion"
+    implementation "android.arch.persistence.room:rxjava2:$project.androidArchVersion"
+    annotationProcessor "android.arch.persistence.room:compiler:$project.androidArchVersion"
 
     // Lifecycle
-    implementation "android.arch.lifecycle:runtime:$project.lifecycleVersion"
-    implementation "android.arch.lifecycle:extensions:$project.lifecycleVersion"
-    annotationProcessor "android.arch.lifecycle:compiler:$project.lifecycleVersion"
+    implementation "android.arch.lifecycle:runtime:$project.androidArchVersion"
+    implementation "android.arch.lifecycle:extensions:$project.androidArchVersion"
+    annotationProcessor "android.arch.lifecycle:compiler:$project.androidArchVersion"
 
     // RxRelay
     implementation "com.jakewharton.rxrelay2:rxrelay:$project.rxRelayVersion"
