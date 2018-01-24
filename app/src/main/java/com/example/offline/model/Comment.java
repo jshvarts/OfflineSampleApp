@@ -5,7 +5,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
-import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
@@ -15,19 +15,16 @@ import java.io.Serializable;
 @Entity
 public class Comment implements Serializable {
 
-    @Expose
     @PrimaryKey(autoGenerate = true)
     private long id;
 
-    @Expose
     @ColumnInfo(name = "photo_id")
     private long photoId;
 
-    @Expose
+    @SerializedName("body")
     @ColumnInfo(name = "comment_text")
     private String commentText;
 
-    @Expose
     @ColumnInfo(name = "timestamp")
     private long timestamp;
 
