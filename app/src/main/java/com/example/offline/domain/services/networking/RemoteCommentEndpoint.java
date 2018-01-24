@@ -8,6 +8,6 @@ import retrofit2.http.POST;
 
 interface RemoteCommentEndpoint {
 
-    @POST("comments")
+    @POST("/posts")
     Call<Comment> addComment(@Body Comment comment);
 }
