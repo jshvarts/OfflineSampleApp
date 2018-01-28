@@ -1,6 +1,6 @@
 # Offline Sample App 
 
-[![Build Status](https://travis-ci.org/jshvarts/OfflineSampleApp.svg?branch=master)](https://travis-ci.org/jshvarts/OfflineSampleApp)
+[![Build Status](https://travis-ci.org/jshvarts/OfflineSampleApp.svg?branch=master)](https://travis-ci.org/jshvarts/OfflineSampleApp) [![Android Weekly](https://img.shields.io/badge/Android%20Weekly-%23279-2CA3E6.svg?style=flat)](http://androidweekly.net/issues/issue-279)
 
 Medium post covering this app: [Building Offline-First App using MVVM, RxJava, Room and Priority Job Queue](https://proandroiddev.com/offline-apps-its-easier-than-you-think-9ff97701a73f) 
 
